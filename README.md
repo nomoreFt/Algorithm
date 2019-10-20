@@ -32,4 +32,11 @@ productPriceMap.putIfAbsent(theKey, callExpensiveMethodToFindValue(theKey));
 // key가 존재한다면 callExpensiveMethodToFindValue()가 결코 호출되지 않는다. 
 productPriceMap.computeIfAbsent(theKey, key -> callExpensiveMethodToFindValue(key));
 
+//ex
+public void read(String text) {
+  for (String word : text.split(" ")) {
+    map.computeIfPresent(word, (String key, Integer value) -> ++value);
+  }
+}
+
 ```
