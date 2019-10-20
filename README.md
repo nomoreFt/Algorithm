@@ -2,9 +2,9 @@
 Practice Algorithm Code
 
 
-##Hash
+## Hash
 
-#map - 
+# map - 
 -.entrySet (Key와 Value를 다 가져와서 사용한다. map.get(key)는 다시 search를 해서 찾아오기 때문에 느리다.)
    ```java
  for(Map.Entry<String, Integer> entry : map.entrySet()) {
