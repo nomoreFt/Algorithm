@@ -1,4 +1,4 @@
-package greedy;
+package greedy;//
 
 public class greedy {
 	    public int solution(int n, int[] lost, int[] reserve) {
