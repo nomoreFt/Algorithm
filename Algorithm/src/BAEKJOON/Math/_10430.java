@@ -1,5 +1,5 @@
 package BAEKJOON.Math;
-
+//잔디 테스트
 import java.util.*;
 
 public class _10430 {
