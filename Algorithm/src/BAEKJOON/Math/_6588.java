@@ -1,5 +1,5 @@
 package BAEKJOON.Math;
-
+//ÇØ°á
 import java.io.*;
 import java.util.*;
 
