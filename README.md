@@ -40,3 +40,6 @@ public void read(String text) {
 }
 
 ```
+
+#20201203
+PrimeNum 에라토스테네스의 채를 이용하여 소수 문제 풀기
