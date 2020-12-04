@@ -1,5 +1,5 @@
 package BAEKJOON.Math;
-//해결
+//해결?
 import java.io.*;
 import java.util.*;
 
