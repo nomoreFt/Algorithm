@@ -1,7 +1,7 @@
 package BAEKJOON.BruteForce;
 
 public class _10972_test {
-
+//
 	public void getNextPermutation(int[] arr, int n) {
 		int splitNum = n;
 		int temp = 0;
