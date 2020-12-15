@@ -1,4 +1,4 @@
-package BAEKJOON.BruteForce;
+package BAEKJOON.BruteForce.Permutation;
 
 import java.io.*;
 
