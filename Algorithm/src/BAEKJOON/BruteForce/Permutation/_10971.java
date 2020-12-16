@@ -33,7 +33,7 @@ public class _10971 {
 	}
 	public static void permutation(int[] arr, int[] output, boolean[] visited, int depth, int N) {
 		if(depth == N) {
-			getMinPrice(output,N);
+			//getMinPrice(output,N);
 			return;
 		}
 		
