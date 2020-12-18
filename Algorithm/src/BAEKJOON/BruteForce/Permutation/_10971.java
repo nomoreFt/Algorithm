@@ -7,7 +7,6 @@ public class _10971 {
 	static int N;
 	static int[] arr;
 	static boolean[] visited;
-	static int[] output;
 	static int min = Integer.MAX_VALUE;
 	static int sum;
 	public static void main(String[] args) throws IOException{
@@ -22,17 +21,20 @@ public class _10971 {
 		}
 		arr = new int[N];
 		visited = new boolean[N];
-		output = new int[N];
-		permutation(arr,visited,output,0);
+		permutation(arr,visited,0);
+		System.out.println(min);
 	}
-	public static void permutation(int[] arr, boolean[] visited, int[] output, int depth) {
+	public static void permutation(int[] arr, boolean[] visited, int depth) {
 		if(depth == N) {
 			min = Math.min(sum, min);
 			return;
 		}
 		for(int i = 0 ; i < N; i++) {
 			if(visited[i]) continue;
-			
+			sum += arr[i];
+			visited[i] = true;
+			permutation(arr,visited,depth+1);
+			sum -= arr[i];
 		}
 	}
 }
