@@ -3,7 +3,7 @@ package BAEKJOON.BruteForce.Permutation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
- //
+ ////
 public class _10971 {
  
     static int n ;
