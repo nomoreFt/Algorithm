@@ -3,8 +3,8 @@ package BAEKJOON.BruteForce.Permutation;
 public class perm_test {
 
     public static void main(String[] args) {
-        int n = 3;
-        int[] arr = {1, 2, 3};
+        int n = 6;
+        int[] arr = {1, 2, 3, 4, 5, 6, 8};
         int[] output = new int[n];
         boolean[] visited = new boolean[n];
 
