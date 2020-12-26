@@ -2,49 +2,43 @@ package BAEKJOON.BruteForce.Permutation;
 
 import java.io.*;
 
-//
+import java.util.*;
 public class _6603 {
-	static int N;
-	static int arr[];
-	static int output[];
-	static boolean visited[];
-	static int lottoNum = 6;
-	static StringBuilder sb;
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		sb = new StringBuilder();
-		while(true) {
-			String[] strs = br.readLine().split(" ");
-			N = Integer.parseInt(strs[0]);
-			if(N == 0) break;
-			arr = new int[N];
-			output = new int[lottoNum];
-			visited = new boolean[N];
-			for(int i = 1 ; i <= N; i++) {
-				arr[i-1] = Integer.parseInt(strs[i]);
-			}
-			dfs(0);
-			sb.append("\n");
-		}
-		System.out.println(sb.toString());
-	}
-	public static void dfs(int depth) {
-		if(depth == lottoNum) {
-			print(output);
-			return;
-		}
-		for(int i = 0; i < N; i++) {
-			if(visited[i]) continue;
-			visited[i] = true;
-			output[depth] = arr[i];
-			dfs(depth+1);
-			visited[i] = false;
-		}
-	}
-	public static void print(int[] output) {
-		for(int i = 0 ; i < output.length; i++) {
-			if(i == output.length-1) sb.append(output[i]+"\n");
-			else sb.append(output[i] + " ");
-		}
-	}
+    public static int[] lotto;
+    public static int[] answer;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+
+        String input = scan.nextLine();
+        while(!input.equals("0")){
+            String[] temp = input.split(" ");
+            lotto = new int[temp.length-1];
+            answer = new int[temp.length-1];
+
+            int k = Integer.parseInt(temp[0]);
+
+            for(int i=1;i<temp.length;i++){
+                lotto[i-1] = Integer.parseInt(temp[i]);
+            }
+            dfs(0,0, k);
+            System.out.println();
+
+            input = scan.nextLine();
+        }
+    }
+
+    public static void dfs(int idx, int depth,int k){
+        if(depth==6){ // 6개의 순열이 만들어지면 출력후 return
+            StringBuilder stringBuilder = new StringBuilder();
+            for(int i=0;i<6;i++){ // 자바의 System 호출을 여러번 하는것은 효율이 좋지 않으므로 한꺼번에 출력한다.
+                stringBuilder.append(answer[i]+" ");
+            }
+            System.out.println(stringBuilder.toString().trim()); 
+            return;
+        }
+        for(int i=idx;i<k;i++){
+            answer[depth] = lotto[i];
+            dfs(i+1,depth+1,k);
+        }
+    }
 }
