@@ -1,7 +1,6 @@
 package BAEKJOON.BruteForce.Permutation;
 
 import java.io.*;
-
 import java.util.*;
 public class _6603 {
     public static int[] lotto;
@@ -26,7 +25,6 @@ public class _6603 {
             input = scan.nextLine();
         }
     }
-
     public static void dfs(int idx, int depth,int k){
         if(depth==6){ // 6개의 순열이 만들어지면 출력후 return
             StringBuilder stringBuilder = new StringBuilder();
