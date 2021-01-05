@@ -1,7 +1,7 @@
 package BAEKJOON.BruteForce.Permutation;
 
 import java.io.*;
-
+//
 public class _6603_nCr {
 	static int N;
 	static int[] arr;
