@@ -43,5 +43,4 @@ public class _15650 {
 		}
 		sb.append("\n");
 	}
-	
 }
