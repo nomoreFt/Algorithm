@@ -10,6 +10,7 @@ public class _18290 {
 	static int[] dx = { -1, 0, 1, 0};
 	static int[] dy = {0, -1, 0, 1};
 	static int max;
+	
 	public static void main(String[] args) throws IOException{
 		br = new BufferedReader(new InputStreamReader(System.in));
 		String[] str = br.readLine().split(" ");
@@ -28,38 +29,34 @@ public class _18290 {
 		DFS(0,0);
 		System.out.println(max);
 	}
-	public static void DFS(int depth,int sum) {
+	
+	public static void DFS(int depth, int sum) {
 		
 		if(depth==K) {
 			max = Math.max(max, sum);
 			return;
 		}
-		
 		for(int i =  0; i < N; i++) {
 			for(int j = 0 ; j < M; j++) {
-				if(visited[i][j]) continue;
-				checkNear(i,j);
+				if(checkValid(i,j)) continue;
+				visited[i][j] = true;
 				DFS(depth+1,sum+arr[i][j]);
-				uncheckNear(i,j);
+				visited[i][j] = false;
 			}
 		}
 	}
-	public static void checkNear(int x, int y) {
-		visited[x][y] = true;
+	
+	public static boolean checkValid(int x, int y) {
+		boolean isOkay = false;
+		if(visited[x][y]) return true;
 		for(int i = 0; i < 4; i++) {
 			int nextX = x+dx[i];
 			int nextY = y+dy[i];
 			if(nextX<0||nextX>=N||nextY<0||nextY>=M) continue;
-			visited[nextX][nextY] = true;
+			if(visited[nextX][nextY]) {
+				return true;
+			}
 		}
-	}
-	public static void uncheckNear(int x, int y) {
-		visited[x][y] = false;
-		for(int i = 0; i < 4; i++) {
-			int nextX = x+dx[i];
-			int nextY = y+dy[i];
-			if(nextX<0||nextX>=N||nextY<0||nextY>=M) continue;
-			visited[nextX][nextY] = false;
-		}
+		return isOkay;
 	}
 }
