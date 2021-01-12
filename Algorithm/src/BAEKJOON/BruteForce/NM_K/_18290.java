@@ -1,5 +1,5 @@
 package BAEKJOON.BruteForce.NM_K;
-
+//
 import java.io.*;
 
 public class _18290 {
