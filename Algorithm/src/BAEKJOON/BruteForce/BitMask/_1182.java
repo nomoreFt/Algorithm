@@ -1,7 +1,7 @@
 package BAEKJOON.BruteForce.BitMask;
 
 import java.io.*;
-
+//
 public class _1182 {
 	static int N,S,B = 0,cnt = 0;
 	static int[] arr;
