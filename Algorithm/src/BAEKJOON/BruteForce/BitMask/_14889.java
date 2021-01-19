@@ -9,6 +9,7 @@ public class _14889 {
 	static int N,min = Integer.MAX_VALUE;
 	static int[][] S;
 	static boolean[] visited;
+	static int cnt = 0;
 	public static void main(String[] args) throws IOException{
 		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(bf.readLine());
@@ -22,57 +23,39 @@ public class _14889 {
 		}
 		for(int i = 0; i < (1 << N); i++) {
 			for(int j = 0; j < N; j++) {
+				if((i&(1 << j)) != 0) {
+					visited[j] = true;
+					cnt ++;
+				}
 			}
-		}
-	}
-	
-	/*public static void main(String[] args) throws IOException{
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(bf.readLine());
-		visited = new boolean[N];
-		S = new int[N][N];
-		for(int i = 0; i < N; i++) {
-			StringTokenizer st = new StringTokenizer(bf.readLine()," ");
-			for(int j = 0; j < N; j++) {
-				S[i][j] = Integer.parseInt(st.nextToken());
+			if(cnt == N/2) {
+			getMin();
 			}
+			for(int k = 0; k < visited.length; k++) {
+				visited[k] = false;
+			}
+			cnt = 0;
 		}
-		DFS(0,0);
 		System.out.println(min);
 	}
-	static void DFS(int idx, int depth) {
-		if(depth == N/2) {
-			diff();
-			return;
-		}
-		for(int i = idx; i < N; i++) {
-			if(!visited[i]) {
-			visited[i] = true;
-			DFS(idx+1,depth+1);
-			visited[i] = false;
-			}
-		}
-	}
-	static void diff() {
+	static void getMin() {
 		int team_start = 0;
 		int team_link = 0;
-		for(int i = 0; i < N-1; i++) {
-			for(int j = i+1; j < N; j++) {
-				if(visited[i] == true && visited[j] == true) {
-					team_start += S[i][j]; 
-					team_start += S[j][i];
+		for(int i = 0 ; i < N-1; i++) {
+			for(int j = i+1; j < N; j++ ) {
+				if(visited[i] && visited[j]) {
+					team_start += S[i][j] + S[j][i];
 				}
-				else if(visited[i] == false && visited[j] == false) {
-					team_link += S[i][j];
-					team_link += S[j][i];
+				if(!visited[i] && !visited[j]) {
+					team_link += S[i][j] + S[j][i];
 				}
-			}
 		}
-		int dif = Math.abs(team_start - team_link);
+	}
+		int dif = Math.abs(team_start-team_link);
 		if(dif == 0) {
 			System.out.println(dif);
 			System.exit(0);
 		}
-		min = Math.min(min,dif); 
-	}*/
+		min = Math.min(dif, min);
+	}
 }
