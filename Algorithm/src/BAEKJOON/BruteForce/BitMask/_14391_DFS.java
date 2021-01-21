@@ -2,7 +2,7 @@ package BAEKJOON.BruteForce.BitMask;
 
 import java.io.*;
 
-public class _14391 {
+public class _14391_DFS {
 	static int N,M;
 	static int Map[][];
 	static boolean visited[][];
