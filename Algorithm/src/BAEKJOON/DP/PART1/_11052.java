@@ -20,7 +20,7 @@ public class _11052{
 		if(x==0) return 0;
 		if(d[x] != 0) return d[x];
 		for(int i = 1; i <= x; i++) {
-			d[x] = Math.min(d[x], dp(x-i) + P[i]);
+			d[x] = Math.max(d[x], dp(x-i) + P[i]);
 		}
 		return d[x];
 	}
