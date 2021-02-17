@@ -1,6 +1,6 @@
 package BAEKJOON.DP.PART1;
 
-import java.io.*;
+import java.io.*;//
 
 public class _11052{
 	static int N;
