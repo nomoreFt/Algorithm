@@ -18,7 +18,7 @@ public class 신규아이디추천 {
 			new_id=new_id.replaceAll("\\.{2,}", ".");
 			new_id=new_id.replaceAll("^\\.","");
 			new_id=new_id.replaceAll("[.]$","");
-			if(new_id.isBlank()) {
+			if(new_id.isEmpty()) {
 				new_id += "a";
 			}
 			if(new_id.length()>=16) {
