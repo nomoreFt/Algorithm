@@ -12,12 +12,12 @@ public class 개미전사 {
 		K = new int[N+1];
 		String[] strs = bf.readLine().split(" ");
 		for(int i = 1; i <= N; i++) {
-			K[i] = Integer.parseInt(strs[i]);
+			K[i] = Integer.parseInt(strs[i-1]);
 		}
 		int even = 0;
 		int odd = 0;
 		for(int i = 1; i <= N; i++) {
-			if(i/2 == 0) {
+			if(i%2 == 0) {
 				even += K[i];
 			}else {
 				odd += K[i];
