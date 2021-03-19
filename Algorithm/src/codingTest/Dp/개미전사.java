@@ -1,7 +1,7 @@
 package codingTest.Dp;
 
 import java.io.*;
-
+//
 public class 개미전사 {
 	static int N;
 	static int[] K;
