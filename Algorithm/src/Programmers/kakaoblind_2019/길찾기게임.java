@@ -2,7 +2,7 @@ package Programmers.kakaoblind_2019;
 import java.util.*;
 
 public class 길찾기게임 {
-	class Solution {
+	class Solution { 
 	    class Node{
 	        Node(int x, int y, int id){
 	            this.x = x;

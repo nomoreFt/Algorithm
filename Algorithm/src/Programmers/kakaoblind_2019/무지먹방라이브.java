@@ -1,6 +1,6 @@
 package Programmers.kakaoblind_2019;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class 무지먹방라이브 {
@@ -19,34 +19,37 @@ public class 무지먹방라이브 {
 	        }
 	    };
 	    
-	    public static  int solution(int[] food_times, long k) {
-	        List<Food> foods = new LinkedList<Food>();
-	        int n = food_times.length;
-	        for(int i = 0 ; i < n; i++){
-	            foods.add(new Food(food_times[i], i+1));
-	        }    
-	            foods.sort((a, b) -> a.time - b.time);
+	    public static int solution(int[] food_times, long k) {
+	        int N = food_times.length;
+	        List<Food> foodList = new ArrayList<Food>();
+	        for(int i = 0 ; i < N; i++){
+	            foodList.add(new Food(i+1,food_times[i]));
+	        }
+	        foodList.sort((a, b) -> a.time - b.time);
 	        
 	        int pretime = 0;
-	        int i = 0;
-	        for(Food f : foods){
-	            long diff = f.time - pretime;
-	            if(diff != 0){
-	                long spend = diff * n;
+	        int width = N;
+	        for(int j = 0 ; j < N; j++){
+	            int height = foodList.get(j).time - pretime;
+	            if(height == 0) {
+	                width--;
+	                continue;
+	            }else{
+	                int spend = width * height;
 	                if(spend <= k){
 	                    k -= spend;
-	                    pretime = f.time;
-	                }else {
-	                    k %= n;
-	                    foods.subList(i, food_times.length).sort((a, b) -> a.idx - b.idx);
-	                    return foods.get(i+(int)k).idx;
+	                    width --;
+	                    pretime = foodList.get(j).time;
+	                }else if(spend == k){
+	                    return -1;
+	                }else{
+	                   k %= width;
+	                   List<Food> subList = foodList.subList(j, N);
+	                   subList.sort((a, b) -> a.idx - b.idx);
+	                   return subList.get((int) k).idx;
 	                }
 	            }
-	            i++;
-	            n--;
 	        }
-	        
-	        
-	        return -1;
+	    return -1;
 	    }
 	}
