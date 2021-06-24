@@ -59,4 +59,4 @@ visited 순서 전체순열
 #20210113
 비트연산, 비트마스크 문제 풀기
 
-[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=velopert)](https://github.com/eungyeole/velog-readme-stats)
+[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=nomoreft)](https://github.com/nomoreFt/Algorithm)
