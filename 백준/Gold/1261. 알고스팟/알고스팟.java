@@ -26,14 +26,15 @@ class Main {
 
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+      /*  BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());*/
+        String[] strs = br.readLine().split(" ");
 
-        m = Integer.parseInt(st.nextToken()); // 가로
-        n = Integer.parseInt(st.nextToken()); // 세로
-       /* n = Integer.parseInt(strs[1]);
+        /*m = Integer.parseInt(st.nextToken()); // 가로
+        n = Integer.parseInt(st.nextToken()); // 세로*/
+        n = Integer.parseInt(strs[1]);
         m = Integer.parseInt(strs[0]);
-*/
+
         graph = new int[n][m];
 
         for (int i = 0; i < n; i++) {
@@ -44,9 +45,10 @@ class Main {
         }
 
         int result = bfs(0, 0);
-        bw.write(result + "\n");
+        System.out.println(result);
+    /*    bw.write(result + "\n");
         bw.flush();
-        bw.close();
+        bw.close();*/
         br.close();
 
     }
