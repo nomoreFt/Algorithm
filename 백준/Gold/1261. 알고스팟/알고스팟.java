@@ -1,95 +1,86 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
- 
-class Point implements Comparable<Point> {
+
+class Node implements Comparable<Node> {
     int x;
     int y;
-    int cnt; // 벽을 부순 개수
- 
-    Point(int x, int y, int cnt) {
+    int cnt;
+
+    public Node(int x, int y, int cnt) {
         this.x = x;
         this.y = y;
         this.cnt = cnt;
     }
- 
+
     @Override
-    public int compareTo(Point o) {
-        return cnt - o.cnt;
+    public int compareTo(Node other) {
+        return cnt - other.cnt;
     }
 }
- 
-public class Main {
-    static int[] rangeX = { -1, 0, 1, 0 };
-    static int[] rangeY = { 0, 1, 0, -1 };
-    static int N, M;
-    static int[][] map;
- 
-    public static void main(String[] args) throws Exception {
+class Main {
+    static int n,m;
+    static int[][] graph;
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
- 
-        M = Integer.parseInt(st.nextToken()); // 가로
-        N = Integer.parseInt(st.nextToken()); // 세로
- 
-        map = new int[N + 1][M + 1];
- 
-        for (int i = 1; i <= N; i++) {
+
+        m = Integer.parseInt(st.nextToken()); // 가로
+        n = Integer.parseInt(st.nextToken()); // 세로
+       /* n = Integer.parseInt(strs[1]);
+        m = Integer.parseInt(strs[0]);
+*/
+        graph = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
             String input = br.readLine();
-            for (int j = 1; j <= M; j++) {
-                map[i][j] = Character.getNumericValue(input.charAt(j - 1));
+            for (int j = 0; j < m; j++) {
+                graph[i][j] = Character.getNumericValue(input.charAt(j));
             }
         }
- 
-        int ans = BFS(1, 1);
- 
-        bw.write(ans + "\n");
+
+        int result = bfs(0, 0);
+        bw.write(result + "\n");
         bw.flush();
         bw.close();
         br.close();
+
     }
- 
-    public static int BFS(int x, int y) {
-        // 벽을 부순 개수를 오름차순으로 정렬하도록 설정.
-        PriorityQueue<Point> q = new PriorityQueue<>();
- 
-        q.offer(new Point(x, y, 0));
-        boolean[][] visit = new boolean[N + 1][M + 1];
-        visit[x][y] = true;
- 
-        int dx, dy;
-        while (!q.isEmpty()) {
-            Point p = q.poll();
- 
-            // 도착점에 도달했으면 종료.
-            if (p.x == N && p.y == M) {
-                return p.cnt;
+
+    static int bfs(int x, int y) {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(x, y, 0));
+        boolean[][] visited = new boolean[n][m];
+        visited[x][y] = true;
+
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
+
+            if (node.x == n - 1 && node.y == m - 1) {
+                return node.cnt;
             }
- 
+
             for (int i = 0; i < 4; i++) {
-                dx = p.x + rangeX[i];
-                dy = p.y + rangeY[i];
- 
-                if (dx < 1 || dy < 1 || dx > N || dy > M) {
-                    continue;
+                int nX = dx[i] + node.x;
+                int nY = dy[i] + node.y;
+
+                if(nX < 0 || nX >= n || nY < 0 || nY >= m) continue;
+
+                if (!visited[nX][nY] && graph[nX][nY] == 0) {
+                 visited[nX][nY] = true;
+                    pq.offer(new Node(nX, nY, node.cnt));
                 }
- 
-                if (!visit[dx][dy] && map[dx][dy] == 0) {
-                    visit[dx][dy] = true;
-                    q.offer(new Point(dx, dy, p.cnt));
-                }
- 
-                if (!visit[dx][dy] && map[dx][dy] == 1) {
-                    visit[dx][dy] = true;
-                    q.offer(new Point(dx, dy, p.cnt + 1));
+
+                if (!visited[nX][nY] && graph[nX][nY] == 1) {
+                    visited[nX][nY] = true;
+                    pq.offer(new Node(nX, nY, node.cnt + 1));
                 }
             }
         }
         return 0;
     }
- 
 }
