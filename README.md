@@ -1,7 +1,7 @@
 # Algorithm
 Practice Algorithm Code
 
-백준 t
+백준 tt
 ## Hash
 
 # map - 
