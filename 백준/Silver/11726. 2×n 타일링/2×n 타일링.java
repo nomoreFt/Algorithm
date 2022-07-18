@@ -1,18 +1,37 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
-public class Main{
+class Main {
+    static int[] dp;
     static int n;
-    static int[] d;
     public static void main(String[] args) throws IOException{
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(bf.readLine());
-        d = new int[1001];
-        System.out.println(dp(n));
-    }   
-    static int dp(int x){
-        if(x==1) return 1;
-        if(x==2) return 2;
-        if(d[x] != 0) return d[x];
-        return d[x] = (dp(x-1) + dp(x-2)) % 10007;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+        dp = new int[n + 2];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+
+        if (n == 1) {
+
+            System.out.println(1);
+            return;
+        }
+        if (n == 2) {
+
+            System.out.println(2);
+            return;
+        }
+
+        for (int i = 3; i <= n; i++) {
+            dp[i] = (dp[i-1] + dp[i-2]) % 10007;
+        }
+        System.out.println(dp[n]);
+
     }
 }
+
