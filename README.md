@@ -1,7 +1,7 @@
 # Algorithm
 Practice Algorithm Code
 
-백준 tt
+백준 ttstream
 ## Hash
 
 # map - 
