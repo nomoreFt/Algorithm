@@ -14,24 +14,23 @@ public class Main {
         int[] alpha = new int[26];
 
         for (int i = 0; i < N; i++) {
-            int temp = (int) Math.pow(10, arr.get(i).length() - 1);
-            for (int j = 0; j < arr.get(i).length(); j++) {
-                alpha[arr.get(i).charAt(j) - 'A'] += temp;
+            String str = arr.get(i);
+            int temp = (int)Math.pow(10, str.length() - 1);
+            for (int j = 0; j < str.length(); j++) {
+                alpha[str.charAt(j) - 'A'] += temp;
                 temp /= 10;
             }
         }
 
         Arrays.sort(alpha);
+
         int idx = 9;
         int sum = 0;
         for (int i = alpha.length - 1; i >= 0; i--) {
-            if (alpha[i] == 0) {
-                break;
-            }
+            if(alpha[i] == 0) break;
             sum += alpha[i] * idx;
             idx--;
         }
         System.out.println(sum);
     }
-
 }
