@@ -62,3 +62,6 @@ visited 순서 전체순열
 [![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api/badge?name=nomoreft)](https://velog.io/@nomoreft)
 
 [![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=nomoreft)](https://github.com/nomoreFt/Algorithm)
+
+
+NQueen
