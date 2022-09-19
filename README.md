@@ -1,5 +1,5 @@
 # Algorithm
-Practice Algorithm Code
+Practice Algorithm Code 
 
 백준 
 ## Hash
