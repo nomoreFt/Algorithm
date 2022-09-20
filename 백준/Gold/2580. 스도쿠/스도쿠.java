@@ -1,6 +1,4 @@
 import java.io.*;
-import java.sql.Array;
-import java.time.chrono.MinguoChronology;
 import java.util.*;
 
 public class Main {
@@ -30,9 +28,7 @@ public class Main {
 
         dfs(0);
     }
-    //arr[depth열] = 값(행) ex) arr[0] = 1  (0,1)에 체스가 위치
     static void dfs(int depth) {
-        //depth +1 될 때 마다 왼쪽에서 오른쪽으로 진행이다. 전체 진행 완료란 의미
         if (depth == size) {
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
@@ -44,42 +40,41 @@ public class Main {
         }
 
         Node now = targets.get(depth);
-        int nowRow = now.x;
-        int nowCol = now.y;
+        int nowX = now.x;
+        int nowY = now.y;
         for (int i = 1; i <= 9; i++) {
-            if (possibility(nowRow, nowCol, i)) {
-                graph[nowRow][nowCol] = i;
+            if (possibility(now, i)) {
+                graph[now.x][now.y] = i;
                 dfs(depth + 1);
-                graph[nowRow][nowCol] = 0;
+                graph[now.x][now.y] = 0;
             }
         }
     }
 
-    static boolean possibility(int row, int col, int value) {
+    static boolean possibility(Node now, int value) {
         for (int i = 0; i < 9; i++) {
-            if (graph[row][i] == value) {
+            if (Math.abs(graph[now.x][i]-value)==0) {
                 return false;
             }
         }
 
         for (int i = 0; i < 9; i++) {
-            if (graph[i][col] == value) {
+            if (Math.abs(graph[i][now.y]-value) == 0) {
                 return false;
             }
         }
 
-        int set_row = (row / 3) * 3;
-        int set_col = (col / 3) * 3;
+        int nowX = (now.x / 3) * 3;
+        int nowY = (now.y / 3) * 3;
 
-        for (int i = set_row; i < set_row + 3; i++) {
-            for (int j = set_col; j < set_col + 3; j++) {
-                if (graph[i][j] == value) {
+        for (int i = nowX; i < nowX + 3; i++) {
+            for (int j = nowY; j < nowY + 3; j++) {
+                if (Math.abs(graph[i][j]-value) == 0) {
                     return false;
                 }
             }
         }
-
         return true;
-
     }
 }
+
