@@ -1,140 +1,150 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.LinkedList;
 
-public class Main {
-    
-    static int n, answer, map[][];
-    
-    public static void main(String[] args) throws Exception {
+class Main {
+    static int N;
+    static int[][] graph;
+    static int result = 0;
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
-        answer = 0;
-        map = new int[n][n];
-        StringTokenizer stz;
-        for(int i = 0; i < n; i++) {
-            stz = new StringTokenizer(br.readLine());
-            for(int j = 0; j < n; j++)
-                map[i][j] = Integer.parseInt(stz.nextToken());
+        N = Integer.parseInt(br.readLine());
+
+        graph = new int[N][N];
+        for(int i = 0; i < N; i++){
+            String[] input = br.readLine().split(" ");
+            for(int j = 0; j < N; j++){
+                graph[i][j] = Integer.parseInt(input[j]);
+            }
         }
-        
-        game(0);
-        System.out.println(answer);
+
+        dfs(0);
+        System.out.println(result);
     }
-    
-    public static void game(int count) {
-        if(count == 5) {
+    static void dfs(int depth) {
+        if (depth == 5) {
             findMax();
             return;
         }
-        int copy[][] = new int[n][n];
-        for(int i = 0; i < n; i++)
-            copy[i] = map[i].clone();
-        
-        for(int i = 0; i < 4; i++) {
+        int[][] temp = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            temp[i] = graph[i].clone();
+        }
+        for (int i = 0; i < 4; i++) {
             move(i);
-            game(count+1);
-            for(int a = 0; a < n; a++)
-                map[a] = copy[a].clone();
+            dfs(depth + 1);
+            for (int j = 0; j < N; j++) {
+                graph[j] = temp[j].clone();
+            }
         }
     }
-    
-    public static void move(int dir) {
-        switch(dir) {
-            //위로 몰기
-            case 0:
-                for(int i = 0; i < n; i++) {
-                    int index = 0;
-                    int block = 0;
-                    for(int j = 0; j < n; j++) {
-                        if(map[j][i] != 0) {
-                            if(block == map[j][i]) {
-                                map[index - 1][i] = block * 2;
-                                block = 0;
-                                map[j][i] = 0;
-                            }
-                            else {
-                                block = map[j][i];
-                                map[j][i] = 0;
-                                map[index][i] = block;
-                                index++;
-                            }
-                        }
-                    }
-                }
-                break;
-            //왼쪽으로 몰기
-            case 1:
-                for(int i = 0; i < n; i++) {
-                    int index = n - 1;
-                    int block = 0;
-                    for(int j = n - 1; j >= 0; j--) {
-                        if(map[j][i] != 0) {
-                            if(block == map[j][i]) {
-                                map[index + 1][i] = block * 2;
-                                block = 0;
-                                map[j][i] = 0;
-                            }
-                            else {
-                                block = map[j][i];
-                                map[j][i] = 0;
-                                map[index][i] = block;
-                                index--;
-                            }
-                        }
-                    }
-                }
-                break;
-            //왼쪽으로 몰기
-            case 2:
-                for(int i = 0; i < n; i++) {
-                    int index = 0;
-                    int block = 0;
-                    for(int j = 0; j < n; j++) {
-                        if(map[i][j] != 0) {
-                            if(block == map[i][j]) {
-                                map[i][index - 1] = block * 2;
-                                block = 0;
-                                map[i][j] = 0;
-                            }
-                            else {
-                                block = map[i][j];
-                                map[i][j] = 0;
-                                map[i][index] = block;
-                                index++;
-                            }
-                        }
-                    }
-                }
-                break;
-            //오른쪽으로 몰기
-            case 3:
-                for(int i = 0; i < n; i++) {
-                    int index = n - 1;
-                    int block = 0;
-                    for(int j = n - 1; j >= 0; j--) {
-                        if(map[i][j] != 0) {
-                            if(block == map[i][j]) {
-                                map[i][index + 1] = block * 2;
-                                block = 0;
-                                map[i][j] = 0;
-                            }
-                            else {
-                                block = map[i][j];
-                                map[i][j] = 0;
-                                map[i][index] = block;
-                                index--;
-                            }
-                        }
-                    }
-                }
-                break;
+
+    private static void findMax() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                result = Math.max(result, graph[i][j]);
+            }
         }
     }
-    
-    public static void findMax() {
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < n; j++)
-                answer = Math.max(answer, map[i][j]);
+
+    static void move(int dir) {
+        // 0: 왼쪽, 1: 오른쪽, 2: 위쪽, 3: 아래쪽
+        LinkedList<Integer> q = new LinkedList<>();
+        if (dir == 0) {
+            for (int i = 0; i < N; i++) {// 행 반복
+
+                //0으로 초기화, Q에 다 집어넣기 (한 숫자 당, 한 번만 동작하면 되므로)
+                for (int j = 0; j < N; j++) {
+                    if (graph[i][j] != 0) {
+                        q.add(graph[i][j]);
+                        graph[i][j] = 0;
+                    }
+                }
+
+                //Q에서 하나씩 꺼내서, 0이면 넣고, 0이 아니면, 이전 값과 비교해서 같으면 더하고, 다르면 넣기
+                int idx = 0; //graph에서 숫자 넣을 자리 target
+                while (!q.isEmpty()) {
+                    int now = q.poll();//q에서 계속 꺼내 비교, q가 비면 종료
+                    if (graph[i][idx] == 0) {
+                        graph[i][idx] = now;
+                    } else if (graph[i][idx] == now) {
+                        graph[i][idx] *= 2;
+                        idx++;
+                    }else{
+                        idx++;
+                        graph[i][idx] = now;
+                    }
+                }
+            }
+        } else if (dir == 1) { //오른쪽
+            for (int i = 0; i < N; i++) {
+                for (int j = N-1; j >=0; j--) {
+                    if (graph[i][j] != 0) {
+                        q.add(graph[i][j]);
+                        graph[i][j] = 0;
+                    }
+                }
+                int idx = N - 1;
+                while (!q.isEmpty()) {
+                    int cur = q.poll();
+
+                    if (graph[i][idx] == 0) {
+                        graph[i][idx] = cur;
+                    } else if (graph[i][idx] == cur) {
+                        graph[i][idx] *= 2;
+                        idx--;
+                    }else{
+                        idx--;
+                        graph[i][idx] = cur;
+                    }
+                }
+            }
+        } else if (dir == 2) { //위쪽
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (graph[j][i] != 0) {
+                        q.add(graph[j][i]);
+                        graph[j][i] = 0;
+                    }
+                }
+                int idx = 0;
+                while (!q.isEmpty()) {
+                    int cur = q.poll();
+                    if (graph[idx][i] == 0) {
+                        graph[idx][i] = cur;
+                    } else if (graph[idx][i] == cur) {
+                        graph[idx][i] *= 2;
+                        idx++;
+                    }else{
+                        idx++;
+                        graph[idx][i] = cur;
+                    }
+                }
+            }
+        }
+        else {
+                for (int i = 0; i < N; i++) {
+                for (int j = N-1; j >= 0; j--) {
+                    if (graph[j][i] != 0) {
+                        q.add(graph[j][i]);
+                        graph[j][i] = 0;
+                    }
+                }
+                int idx = N - 1;
+                while (!q.isEmpty()) {
+                    int cur = q.poll();
+                    if (graph[idx][i] == 0) {
+                        graph[idx][i] = cur;
+                    } else if (graph[idx][i] == cur) {
+                        graph[idx][i] *= 2;
+                        idx--;
+                    }else{
+                        idx--;
+                        graph[idx][i] = cur;
+                    }
+                }
+            }
+        }
     }
 }
