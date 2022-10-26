@@ -1,6 +1,6 @@
 # Algorithm
 Practice Algorithm Code 
-
+.
 백준 
 ## Hash
 
