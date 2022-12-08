@@ -1,30 +1,24 @@
 import java.io.*;
-import java.util.*;
-import java.util.stream.IntStream;
+import java.util.Arrays;
 
-public class Main {
+class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine());
 
-        int target = Integer.parseInt(br.readLine());
-        int temp = 9;
-        int result = 0;
-        int numCnt = 1;
-        while (true) {
-            if(target > temp){
-                result += numCnt * temp;
-                target -= temp;
-            }else{
-                result += (target % temp) * numCnt;
-                break;
+        long ans = 0;
+
+        for(int start = 1,len = 1; start<=N; start *=10, len++){
+            int end = start * 10 -1;
+
+            if (end > N) {
+                end = N;
             }
-            temp *= 10;
-            numCnt +=1;
+            ans += (long)(end - start + 1) * len;
         }
-        bw.write(result+"");
-        bw.flush();
-        bw.close();
-        }
+        System.out.println(ans);
     }
+}
+
+
 
