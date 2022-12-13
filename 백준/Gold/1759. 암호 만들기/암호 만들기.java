@@ -1,38 +1,35 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
 
 class Main {
     static int result = 0;
     static int L,C;
-    static String[] strs;
+    static String[] alpha;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        strs = br.readLine().split(" ");
+        String[] strs = br.readLine().split(" ");
         L = Integer.parseInt(strs[0]);
         C = Integer.parseInt(strs[1]);
 
-        strs = br.readLine().split(" ");
-        Arrays.sort(strs);
+        alpha = br.readLine().split(" ");
+        Arrays.sort(alpha);
 
         dfs(0,0,"");
 
     }
 
-    static void dfs(int start,int depth,String result){
+    static void dfs(int idx,int depth,String result){
         if (depth == L && checkPossible(result)) {
             System.out.println(result);
             return;
         }
-        if(depth > L) return;
-        for (int i = start; i < C; i++) {
-            dfs(i+1, depth + 1, result + strs[i]);
-        }
+        if(idx >= alpha.length) return;
+        dfs(idx+1, depth + 1, result + alpha[idx]);
+        dfs(idx+1, depth, result);
+
     }
 
     private static boolean checkPossible(String result) {
