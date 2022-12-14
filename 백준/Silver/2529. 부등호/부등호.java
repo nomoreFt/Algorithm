@@ -1,62 +1,53 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
-public class Main {
-        static int k;
-        static int[] output;
-        static boolean[] visited;
-        static String[] exp;
-    static ArrayList<String> resultArr = new ArrayList<>();
+class Main {
+    static int k;
+    static String[] budeung;
+    static boolean[] visited = new boolean[10];
+
+    static ArrayList<String> ans = new ArrayList<>();
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-         k = Integer.parseInt(br.readLine());
-            output = new int[k+1];
-        exp = new String[k];
-        visited = new boolean[10];
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < k; i++) {
-            exp[i] = st.nextToken();
-        }
-        for (int i = 0; i <= 9; i++) {
-            visited[i] = true;
-            dfs(0,i+"");
-            visited[i] = false;
-        }
-        Collections.sort(resultArr);
-        System.out.println(resultArr.get(resultArr.size() - 1));
-        System.out.println(resultArr.get(0));
-        }
+        k = Integer.parseInt(br.readLine());
+        budeung = br.readLine().split(" ");
 
-    static void dfs(int depth, String now) {
-        if (depth == k) {
-            if (isValid(now)) {
-                resultArr.add(now);
-            }
+        dfs(0,"");
+
+        Collections.sort(ans);
+        System.out.println(ans.get(ans.size()-1));
+        System.out.println(ans.get(0));
+    }
+
+    static void dfs(int idx,String num) {
+        if (idx == k+1) {
+            ans.add(num);
             return;
         }
+        if(idx > k+1) return;
         for (int i = 0; i <= 9; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                dfs(depth + 1, now + i);
-                visited[i] = false;
+            if(visited[i]) continue;
+            if (idx == 0 || ok(num.charAt(idx - 1) - '0', i, budeung[idx - 1])) {
+            visited[i] = true;
+            dfs(idx + 1, num + Integer.toString(i));
+            visited[i] = false;
             }
         }
     }
 
-    private static boolean isValid(String now) {
-        for (int i = 0; i < k; i++) {
-                if (exp[i].equals("<")) {
-                    if (now.charAt(i) > now.charAt(i + 1)) {
-                        return false;
-                    }
-                } else {
-                    if (now.charAt(i) < now.charAt(i + 1)) {
-                        return false;
-                    }
-            }
+    private static boolean ok(int i, int i1, String s) {
+        if (s.equals("<")) {
+            if(i > i1) return false;
+        }
+        if (s.equals(">")) {
+            if(i < i1) return false;
         }
         return true;
     }
-
-    }
+}
 
