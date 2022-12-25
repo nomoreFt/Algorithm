@@ -1,31 +1,29 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
 
 class Main {
-    static int[] dp;
-    static int n;
-    static int[] p;
+    static int[] D;
+    static int[] P;
+    static int N;
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));;
+        N = Integer.parseInt(br.readLine());
+        D = new int[N + 1];
+        P = new int[N + 1];
         String[] strs = br.readLine().split(" ");
-        dp = new int[1002];
-        p = new int[1002];
-        int length = strs.length;
-        for (int i = 1; i <= length; i++) {
-            p[i] = Integer.parseInt(strs[i-1]);
-            dp[i] = Integer.parseInt(strs[i-1]);
+        for (int i = 1; i <= N; i++) {
+            P[i] = Integer.parseInt(strs[i-1]);
+            D[i] = P[i];
         }
-        dp[0] = 0;
-        dp[1] = p[1];
 
-        for (int i = 2; i <= n; i++) {
-            for (int k = 1; k < i; k++) { //i == 4 , k = 1, 2, 3
-                dp[i] = Math.min(dp[i],dp[i - k] + dp[k]);
+        for (int i = 2; i <= N; i++) {
+            for (int j = i; j >= 0; j--) {
+                D[i] = Math.min(D[i], D[i-j] + P[j]);
             }
         }
-        System.out.println(dp[n]);
+        System.out.println(D[N]);
+
     }
 }
-
