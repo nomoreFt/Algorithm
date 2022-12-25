@@ -1,29 +1,24 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
 
 class Main {
+    static int[] D;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
-        int[] dp = new int[100001];
 
-        dp[1] = 1;
+        D = new int[N + 1];
+        Arrays.fill(D, 100001);
+        D[0] = 0;
+        D[1] = 1;
+
         for (int i = 2; i <= N; i++) {
-            int min = Integer.MAX_VALUE;
-            for (int j = 1; j <= (int)i/2; j++) {
-                if (j * j == i) {
-                    min = 1;
-                    break;
-                }else{
-                    min = Math.min(min, dp[j] + dp[i - j]);
-                }
+            for (int j = 0; j * j <= i; j++) {
+                D[i] = Math.min(D[i],D[i-j*j] + 1);
             }
-            dp[i] = min;
         }
-        System.out.println(dp[N]);
-
+        System.out.println(D[N]);
     }
 }
-
