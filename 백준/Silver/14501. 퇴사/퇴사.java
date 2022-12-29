@@ -1,39 +1,39 @@
-import java.util.*;
+import java.io.*;
+import java.util.Arrays;
 
-public class Main{
-   private static class Day{
-     int cost;
-     int delay;
-     public Day(int delay, int cost){
-         this.cost = cost;
-         this.delay = delay;
-     }
-   }
-   static int max = Integer.MIN_VALUE;
-   static int n;
-   static ArrayList<Day> graph = new ArrayList<>();
-   static boolean[] visited;
-   public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);       
-    n = sc.nextInt();
-    visited = new boolean[n];
-    for(int i = 0; i < n; i++){
-        int delay = sc.nextInt();
-        int cost = sc.nextInt();
-        graph.add(new Day(delay,cost));
-    }
-   
-    dfs(0,0);
-    System.out.println(max);
-   }
-   static void dfs(int pay, int date) {
-    if (date <= n) {
-        max = Math.max(max, pay);
+class Main {
+    static int N;
+    static int[] T,P;
+    static int maxPrice = 0;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+        T = new int[N + 1];
+        P = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
+            String[] strs = br.readLine().split(" ");
+            T[i] = Integer.parseInt(strs[0]);
+            P[i] = Integer.parseInt(strs[1]);
+        }
+        //변하는것 날짜, 총합
+        dfs(1, 0);
+        System.out.println(maxPrice);
     }
 
-    for (int i = date; i < n; i++) {
-        dfs(pay + graph.get(i).cost,i + graph.get(i).delay);
+    static void dfs(int day, int sum) {
+        if (day == N + 1) {
+            maxPrice = Math.max(sum, maxPrice);
+            return;
+        }
+        if(day > N+1) return;
+        //선택X
+        dfs(day + 1, sum);
+        dfs(day + T[day], sum + P[day]);
+
     }
 
 }
-}
+
+
+
