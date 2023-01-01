@@ -1,38 +1,37 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.io.*;
+import java.util.Arrays;
 
-public class Main {
+class Main {
+    static int[] A;
+    static int[] D;
     static int N;
-    static int[] arr;
-    static int[] dp;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        arr = new int[N + 1];
-        dp = new int[N + 1];
-
+        D = new int[N];
+        A = new int[N];
         String[] strs = br.readLine().split(" ");
         for (int i = 0; i < N; i++) {
-            arr[i + 1] = Integer.parseInt(strs[i]);
-            dp[i + 1] = arr[i + 1];
+            A[i] = Integer.parseInt(strs[i]);
+            D[i] = Integer.parseInt(strs[i]);
+            
         }
-
-        for (int i = 2; i <= N; i++) {
-            for (int j = 1; j < i; j++) {
-                if (arr[j] < arr[i]) {
-                    dp[i] = Math.max(dp[i], dp[j] + arr[i]);
+        
+        for (int i = 1; i < N; i++) {
+            for (int j = 0; j < i; j++) {
+                if (A[i] > A[j] && D[i] < D[j] + A[i]) {
+                    D[i] = D[j] + A[i];
                 }
             }
         }
-
-        int result = 0;
-        for (int i = 1; i <= N; i++) {
-            result = Math.max(result, dp[i]);
+        int ans = 0;
+        for (int i = 0; i < N; i++) {
+            ans = Math.max(ans, D[i]);
         }
-        System.out.println(result);
+        System.out.println(ans);
+
     }
 }
+
+
+
