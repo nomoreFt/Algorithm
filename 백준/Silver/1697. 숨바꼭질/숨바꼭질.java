@@ -1,54 +1,49 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.io.*;
+import java.sql.Array;
+import java.util.*;
 
-public class Main {
-    static int[] graph;
-    static int n,k;
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        k = sc.nextInt();
 
-        graph = new int[100001];
+class Main {
+    static final int MAX = 200000;
+    static int[] d = new int[MAX];
 
-        if (n == k) {
-            System.out.println(0);
-        }else{
-            bfs();
+
+    static void bfs(int start) {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        d[start] = 0;
+        while (!q.isEmpty()) {
+            int now = q.poll();
+
+            if (now - 1 >= 0) {
+                if (d[now - 1] == -1) {
+                    d[now -1] = d[now] + 1;
+                    q.offer(now - 1);
+                }
+            }if (now +1 < MAX) {
+                if (d[now + 1] == -1) {
+                    d[now +1] = d[now] + 1;
+                    q.offer(now + 1);
+                }
+            }if (now * 2 < MAX) {
+                if (d[now*2] == -1) {
+                    d[now*2] = d[now] + 1;
+                    q.offer(now*2);
+                }
+            }
         }
 
     }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] str = br.readLine().split(" ");
+        int n = Integer.parseInt(str[0]);
+        int k = Integer.parseInt(str[1]);
+        d = new int[MAX];
+        Arrays.fill(d,-1);
 
-    static void bfs() {
-        Queue<Integer> q = new LinkedList<>();
-        graph[n] = 1;
-        q.offer(n);
-        while (!q.isEmpty()) {
-            int cur = q.poll();
+        bfs(n);
 
-            for (int i = 0; i < 3; i++) {
-                int next;
-                if (i == 0) {
-                    next = cur + 1;
-                } else if (i == 1) {
-                    next = cur - 1;
-                }else{
-                    next = cur * 2;
-                }
-                if (next == k) {
-                    System.out.println(graph[cur]);
-                    return;
-                }
-
-                if(next <0 || next >= graph.length || graph[next] != 0) continue;
-
-                q.offer(next);
-                graph[next] = graph[cur] + 1;
-            }
-        }
+        System.out.println(d[k]);
     }
 }
