@@ -4,7 +4,7 @@ import java.util.*;
 
 
 class Main {
-    static final int MAX = 200000;
+    static final int MAX = 100001;
     static int[] d = new int[MAX];
 
 
