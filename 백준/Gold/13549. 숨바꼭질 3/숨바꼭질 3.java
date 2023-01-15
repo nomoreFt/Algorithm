@@ -2,10 +2,9 @@ import java.io.*;
 import java.sql.Array;
 import java.util.*;
 
-
 class Main {
     static int n,k;
-    static int MAX = 200000;
+    static int MAX = 100001;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] strs = br.readLine().split(" ");
@@ -21,7 +20,7 @@ class Main {
         dist[n] = 0;
         while (!deque.isEmpty()) {
             int now = deque.poll();
-
+            if(now == k) break;
             if (now * 2 < MAX && dist[now * 2] == -1) {
                 dist[now * 2] = dist[now];
                 deque.addFirst(now * 2);
@@ -38,8 +37,5 @@ class Main {
         }
 
         System.out.println(dist[k]);
-
-
-
     }
 }
