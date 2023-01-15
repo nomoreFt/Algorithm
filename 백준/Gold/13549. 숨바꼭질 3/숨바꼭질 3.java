@@ -1,74 +1,45 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.sql.Array;
+import java.util.*;
 
-// 숨바꼭질3 문제 - 13549번
-class Human {
-    int x;
-    int time;
 
-    public Human(int x, int time) {
-        this.x = x;
-        this.time = time;
-    }
-}
-
-public class Main {
-
-    static int N, K;
-    static int time = Integer.MAX_VALUE;
-    static boolean[] visited = new boolean[100001];
-
+class Main {
+    static int n,k;
+    static int MAX = 200000;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        String[] strs = br.readLine().split(" ");
+        n = Integer.parseInt(strs[0]);
+        k = Integer.parseInt(strs[1]);
 
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
+        int[] dist = new int[MAX];
 
-        if(N == K){
-            System.out.println(0);
-        }else {
-            bfs(N);
-            System.out.println(time);
-        }
-    }
+        Arrays.fill(dist, -1);
 
-    static void bfs(int start) {
-        Queue<Human> q = new LinkedList<>();
-        q.offer(new Human(start, 0));
-        visited[start] = true;
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        deque.add(n);
+        dist[n] = 0;
+        while (!deque.isEmpty()) {
+            int now = deque.poll();
 
-        while (!q.isEmpty()) {
-            Human now = q.poll();
-
-            if(now.x == K) {
-                time = Math.min(time, now.time);
+            if (now * 2 < MAX && dist[now * 2] == -1) {
+                dist[now * 2] = dist[now];
+                deque.addFirst(now * 2);
+            }
+            if (now-1 >= 0 && dist[now - 1] == -1) {
+                dist[now - 1] = dist[now] + 1;
+                deque.addLast(now -1);
             }
 
-            int next;
-            // 다음에서 영역을 방문 처리
-            // *2의 경우 time 이 증가하지 않으므로 다른 이동보다 먼저 계산되어야함.
-            next = now.x * 2;
-            if(next < 100001 && !visited[next]) {
-                visited[next] = true;
-                q.offer(new Human(next, now.time));
-            }
-
-            next = now.x - 1;
-            if(next >= 0 && !visited[next]) {
-                visited[next] = true;
-                q.offer(new Human(next, now.time + 1));
-            }
-
-            next = now.x + 1;
-            if(next < 100001 && !visited[next]) {
-                visited[next] = true;
-                q.offer(new Human(next, now.time + 1));
+            if (now+1 < MAX && dist[now + 1] == -1) {
+                dist[now + 1] = dist[now] + 1;
+                deque.addLast((now + 1));
             }
         }
+
+        System.out.println(dist[k]);
+
+
+
     }
 }
