@@ -1,80 +1,72 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-    public static class Node {
-        int x;
-        int y;
 
-        public Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+class Main {
+    static int N = 9;
     static int[][] graph = new int[9][9];
-    static ArrayList<Node> targets = new ArrayList<>();
-    static int size;
+    static int[] sdoku = new int[81];
+    static boolean[][] c = new boolean[9][10];// ㅡ
+    static boolean[][] c2 = new boolean[9][10];// |
+    static boolean[][] c3 = new boolean[9][10];// ㅁ
+
+    static int zeroCnt = 0;
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < N; i++) {
             String[] strs = br.readLine().split(" ");
-            for (int j = 0; j < 9; j++) {
-                graph[i][j] = Integer.parseInt(strs[j]);
-                if(graph[i][j] == 0) targets.add(new Node(i, j));
+            for (int j = 0; j < N; j++) {
+                int temp = Integer.parseInt(strs[j]);
+                graph[i][j] = temp;
+                if (temp != 0) {
+                    c[i][temp] = true;
+                    c2[j][temp] = true;
+                    c3[square(i,j)][temp] = true;
+                }else{
+                    zeroCnt++;
+                }
             }
         }
-        size = targets.size();
-
-        dfs(0);
+        calc(0);
     }
-    static void dfs(int depth) {
-        if (depth == size) {
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
+
+    private static int square(int i, int j) {
+        return (i / 3) * 3 + (j / 3);
+    }
+
+    private static void calc(int z) {
+        if (z == 81) {
+            for (int i=0; i<N; i++) {
+                for (int j=0; j<N; j++) {
                     System.out.print(graph[i][j] + " ");
                 }
                 System.out.println();
             }
             System.exit(0);
+
         }
-
-        Node now = targets.get(depth);
-        int nowX = now.x;
-        int nowY = now.y;
-        for (int i = 1; i <= 9; i++) {
-            if (possibility(now, i)) {
-                graph[now.x][now.y] = i;
-                dfs(depth + 1);
-                graph[now.x][now.y] = 0;
-            }
-        }
-    }
-
-    static boolean possibility(Node now, int value) {
-        for (int i = 0; i < 9; i++) {
-            if (Math.abs(graph[now.x][i]-value)==0) {
-                return false;
-            }
-        }
-
-        for (int i = 0; i < 9; i++) {
-            if (Math.abs(graph[i][now.y]-value) == 0) {
-                return false;
-            }
-        }
-
-        int nowX = (now.x / 3) * 3;
-        int nowY = (now.y / 3) * 3;
-
-        for (int i = nowX; i < nowX + 3; i++) {
-            for (int j = nowY; j < nowY + 3; j++) {
-                if (Math.abs(graph[i][j]-value) == 0) {
-                    return false;
+        int x = z/N;
+        int y = z%N;
+        if (graph[x][y] != 0) {
+            calc(z + 1);
+        }else{
+            for (int i = 1; i <= 9; i++) {
+                if (!c[x][i] && !c2[y][i] && !c3[square(x, y)][i]) {
+                    c[x][i] =c2[y][i] =c3[square(x, y)][i] = true;
+                    graph[x][y] = i;
+                    calc(z + 1);
+                    graph[x][y] = 0;
+                    c[x][i] =c2[y][i] =c3[square(x, y)][i] = false;
                 }
             }
         }
+    }
+
+    private static boolean check(int x, int y, int value) {
+        if(c[x][value]) return false;
+        if(c2[y][value]) return false;
+        if(c3[square(x,y)][value]) return false;
         return true;
     }
-}
 
+}
