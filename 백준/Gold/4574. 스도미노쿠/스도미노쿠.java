@@ -1,120 +1,181 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-class Main {
-    static int[][] a = new int[10][10];
-    static boolean[][] c = new boolean[10][10];
-    static boolean[][] c2 = new boolean[10][10];
-    static boolean[][] c3 = new boolean[10][10];
-    static boolean[][] domino = new boolean[10][10];
-    static final int n = 9;
-    static final int[] dx = {0, 1};
-    static final int[] dy = {1, 0};
-    static int square(int x, int y) {
-        return (x / 3) * 3 + (y / 3);
-    }
-    static boolean can(int x, int y, int num) {
-        return c[x][num] == false && c2[y][num] == false && c3[square(x,y)][num] == false;
-    }
-    static boolean check_range(int x, int y) {
-        return 0 <= x && x < n && 0 <= y && y < n;
-    }
-    static int cnt = 0;
+/**
+ * Created by WOOSERK.
+ * User: WOOSERK
+ * Date: 2020-11-19
+ * Time: 오후 4:33
+ */
 
-    static void go(int z) {
-        if (z == 81 && cnt == 0) {
-            for (int i=0; i<n; i++) {
-                for (int j=0; j<n; j++) {
-                    System.out.print(a[i][j]);
-                }
-                System.out.println();
+public class Main
+{
+    static int[][] ary;
+    static ArrayList<int[]> list;
+    static boolean[][] rowCheck;
+    static boolean[][] colCheck;
+    static boolean[][] squareCheck;
+    static boolean[][] domino;
+    static int[] dr = {0, 1};
+    static int[] dc = {1, 0};
+    static StringBuilder sb = new StringBuilder();
+
+    public static boolean sudoku(int index)
+    {
+        // 0을 다 채웠으면 출력
+        if(index >= list.size())
+        {
+            for(int row=0; row<9; row++)
+            {
+                for(int col=0; col<9; col++)
+                    sb.append(ary[row][col]);
+                sb.append('\n');
             }
-            cnt++;
-            return;
+
+            return true;
         }
-        int x = z/n;
-        int y = z%n;
-        if (a[x][y] != 0) {
-             go(z + 1);
-        } else{
-            for (int k = 0; k < 2; k++) {
-                int nX = x + dx[k];
-                int nY = y + dy[k];
 
-                if(nX < 0 || nX >= 9 || nY < 0 || nY >= 9) continue;
-                if(a[nX][nY] != 0) continue;
+        int[] tmp = list.get(index);
+        int i = tmp[0];
+        int j = tmp[1];
 
-                for (int i = 1; i <= 9; i++) {
-                    for (int j = 1; j <= 9; j++) {
-                        if(i==j) continue;
-                        if(domino[i][j]) continue;
-                        if(can(x,y,i) && can(nX,nY,j)) {
-                            check(x,y,i,true);
-                            check(nX,nY,j,true);
-                            domino[i][j] = true;
-                            a[x][y] = i;
-                            a[nX][nY] = j;
-                            go(z+1);
-                            a[x][y] = 0;
-                            a[nX][nY] = 0;
-                            domino[i][j] = false;
-                            check(x,y,i,false);
-                            check(nX,nY,j,false);
+        if(ary[i][j] != 0)
+            return sudoku(index + 1);
+
+        for(int n=1; n<10; n++)
+        {
+            if(!rowCheck[i][n] && !colCheck[j][n] && !squareCheck[i/3*3 + j/3][n])
+            {
+                ary[i][j] = n;
+                rowCheck[i][n] = true;
+                colCheck[j][n] = true;
+                squareCheck[i/3*3 + j/3][n] = true;
+
+                for (int k = 0; k < 2; k++)
+                {
+                    int newRow = i + dr[k];
+                    if (newRow >= 9)
+                        continue;
+                    int newCol = j + dc[k];
+                    if (newCol >= 9)
+                        continue;
+
+                    if(ary[newRow][newCol] != 0)
+                        continue;
+
+                    for(int n2=1; n2<10; n2++)
+                    {
+                        if(!rowCheck[newRow][n2] && !colCheck[newCol][n2] && !squareCheck[newRow/3*3 + newCol/3][n2] && !domino[n][n2])
+                        {
+                            ary[newRow][newCol] = n2;
+                            rowCheck[newRow][n2] = true;
+                            colCheck[newCol][n2] = true;
+                            squareCheck[newRow/3*3 + newCol/3][n2] = true;
+                            domino[n][n2] = true;
+                            domino[n2][n] = true;
+
+                            if(sudoku(index+1))
+                                return true;
+
+                            ary[newRow][newCol] = 0;
+                            rowCheck[newRow][n2] = false;
+                            colCheck[newCol][n2] = false;
+                            squareCheck[newRow/3*3 + newCol/3][n2] = false;
+                            domino[n][n2] = false;
+                            domino[n2][n] = false;
                         }
                     }
                 }
+
+                ary[i][j] = 0;
+                rowCheck[i][n] = false;
+                colCheck[j][n] = false;
+                squareCheck[i/3*3 + j/3][n] = false;
             }
         }
-    }
-    static void check(int x, int y, int num, boolean what) {
-        c[x][num] = what;
-        c2[y][num] = what;
-        c3[square(x,y)][num] = what;
+
+        return false;
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int tc = 1;
-        while (true) {
-            for (int i = 0; i < 10; i++) {
-                Arrays.fill(c[i], false);
-                Arrays.fill(c2[i], false);
-                Arrays.fill(c3[i], false);
-                Arrays.fill(domino[i], false);
-                Arrays.fill(a[i], 0);
+        while(true)
+        {
+            int N = Integer.parseInt(br.readLine());
+            if(N == 0)
+                break;
+
+            // 스도쿠 배열 생성
+            ary = new int[9][9];
+            list = new ArrayList<>();
+
+            rowCheck = new boolean[9][10];
+            colCheck = new boolean[9][10];
+            squareCheck = new boolean[9][10];
+            domino = new boolean[10][10];
+
+            for (int i = 0; i < N; i++)
+            {
+                StringTokenizer st = new StringTokenizer(br.readLine());
+
+                int U = Integer.parseInt(st.nextToken());
+                String LU = st.nextToken();
+                int row = LU.charAt(0) - 'A';
+                int col = LU.charAt(1) - '1';
+                ary[row][col] = U;
+
+                rowCheck[row][U] = true;
+                colCheck[col][U] = true;
+                squareCheck[row/3*3 + col/3][U] =true;
+
+                int V = Integer.parseInt(st.nextToken());
+                String LV = st.nextToken();
+                row = LV.charAt(0) - 'A';
+                col = LV.charAt(1) - '1';
+                ary[row][col] = V;
+
+                rowCheck[row][V] = true;
+                colCheck[col][V] = true;
+                squareCheck[row/3*3 + col/3][V] = true;
+
+                // 사용한 도미노 체크
+                domino[U][V] = true;
+                domino[V][U] = true;
             }
-            int m = sc.nextInt();
-            if (m == 0) break;
-            for (int i = 0; i < m; i++) {
-                int n1 = sc.nextInt();
-                String s1 = sc.next();
-                int n2 = sc.nextInt();
-                String s2 = sc.next();
-                int x1 = s1.charAt(0) - 'A';
-                int y1 = s1.charAt(1) - '1';
-                int x2 = s2.charAt(0) - 'A';
-                int y2 = s2.charAt(1) - '1';
-                a[x1][y1] = n1;
-                a[x2][y2] = n2;
-                domino[n1][n2] = domino[n2][n1] = true;
-                check(x1, y1, n1, true);
-                check(x2, y2, n2, true);
+
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for(int i=1; i<=9; i++)
+            {
+                String num = st.nextToken();
+                int row = num.charAt(0) - 'A';
+                int col = num.charAt(1) - '1';
+                ary[row][col] = i;
+
+                rowCheck[row][i] = true;
+                colCheck[col][i] = true;
+                squareCheck[row/3*3 + col/3][i] = true;
             }
-            for (int i = 1; i <= 9; i++) {
-                String s = sc.next();
-                int x = s.charAt(0) - 'A';
-                int y = s.charAt(1) - '1';
-                a[x][y] = i;
-                check(x, y, i, true);
+
+            for(int i=0; i<9; i++)
+            {
+                for(int j=0; j<9; j++)
+                {
+                    if(ary[i][j] == 0)
+                        list.add(new int[]{i, j});
+                }
             }
-            System.out.println("Puzzle " + tc);
-            go(0);
-            cnt = 0;
-            tc += 1;
+
+            sb.append("Puzzle").append(' ').append(tc).append('\n');
+            sudoku(0);
+            tc++;
         }
+
+        System.out.print(sb.toString());
     }
 }
-
