@@ -1,37 +1,36 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
-
 class Main {
-    static int  N;
-    static boolean[] visited = new boolean[2000000];
+    static int N;
     static int[] arr;
-
-
-
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
+    static boolean[] visited;
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
         arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = sc.nextInt();
-        }
+        arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        int total = Arrays.stream(arr).sum();
+        visited = new boolean[total+10];
+        go(0, 0);
 
-        dfs(0, 0);
-
-        for (int i = 0; i < 2000000; i++) {
-            if(!visited[i]){ System.out.println(i);
-            break;}
+        for (int i = 1; i <= total+10; i++) {
+            if (!visited[i]) {
+                System.out.println(i);
+                break;
+            }
         }
     }
 
-    public static void dfs(int idx, int sum) {
+    private static void go(int idx, int sum) {
         if (idx == N) {
             visited[sum] = true;
             return;
         }
-        dfs(idx + 1,  sum + arr[idx]);
-        dfs(idx + 1,  sum);
+        go(idx+1, sum+arr[idx]);
+        go(idx+1, sum);
 
     }
 }
