@@ -1,67 +1,51 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
-class Main{
-    public static ArrayList<Integer> arr = new ArrayList<Integer>();
-    public static int N,Plus,Minus,Mul,Div;
-    public static int Max = (int) -1e9;
-    public static int Min = (int) 1e9;
-    
-    public static void main(String[] args) throws Exception{
+
+class Main {
+    static int N;
+    static int[] arr;
+    static int[] cals;
+    static int MAX = Integer.MIN_VALUE;
+    static int MIN = Integer.MAX_VALUE;
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] strs = br.readLine().split(" ");
-        N = Integer.parseInt(strs[0]);
-        strs = br.readLine().split(" ");
-        for(int i = 0; i < strs.length; i++){
-            arr.add(Integer.parseInt(strs[i]));
-        }
-        strs = br.readLine().split(" ");
-        Plus = Integer.parseInt(strs[0]);
-        Minus = Integer.parseInt(strs[1]);
-        Mul = Integer.parseInt(strs[2]);
-        Div = Integer.parseInt(strs[3]);
-        dfs(0,arr.get(0));
-        System.out.println(Max);
-        System.out.println(Min);
-        
+        N = Integer.parseInt(br.readLine());
+        arr = new int[N];
+
+        arr = Arrays.stream(br.readLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+        cals = Arrays.stream(br.readLine().split(" "))
+                .mapToInt(Integer::parseInt).toArray();
+
+        go(arr[0], 1, cals[0], cals[1], cals[2], cals[3]);
+        System.out.println(MAX);
+        System.out.println(MIN);
     }
-    public static void dfs(int depth,int value){
-        if(depth == N-1) {
-            Max = Math.max(Max,value);
-            Min = Math.min(Min,value);
+
+    private static void go(int sum, int idx, int plus, int min, int mul, int div){
+        if (idx == N) {
+            MAX = Math.max(MAX, sum);
+            MIN = Math.min(MIN, sum);
+            return;
         }
-        if(Plus > 0){
-            value += arr.get(depth+1);
-            Plus = Plus-1;
-            depth += 1;
-            dfs(depth,value);
-            Plus += 1;
-            depth-=1;
-            value -= arr.get(depth+1);
-        } if(Minus > 0){
-            value -= arr.get(depth+1);
-            Minus = Minus-1;
-            depth += 1;
-            dfs(depth,value);
-            depth -= 1;
-            Minus += 1;
-            value += arr.get(depth+1);
-        } if(Mul > 0){
-            value *= arr.get(depth+1);
-            Mul = Mul-1;
-            depth += 1;
-            dfs(depth,value);
-            depth -= 1;
-            Mul += 1;
-            value /= arr.get(depth+1);
-        } if(Div > 0){
-            value /= arr.get(depth+1);
-            Div = Div-1;
-            depth += 1;
-            dfs(depth,value);
-            depth -= 1;
-            Div += 1;
-            value *= arr.get(depth+1);
+        if (plus > 0) {
+            go(sum + arr[idx], idx + 1, plus - 1, min, mul, div);
+        }
+
+        if (min > 0) {
+            go(sum - arr[idx], idx + 1, plus , min-1, mul, div);
+        }
+
+        if (mul > 0) {
+            go(sum * arr[idx], idx + 1, plus , min, mul -1, div);
+        }
+
+        if (div > 0) {
+            go(sum / arr[idx], idx + 1, plus, min, mul, div - 1);
         }
     }
+
 }
