@@ -1,18 +1,26 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 class Main {
-    static int N, K;
-    static String[] strs;
-    static boolean[] isTeached;
-
-    static int result = 0;
-
-    public static void main(String[] args) throws IOException {
+    static int N,K;
+    static int[] arr;
+    static boolean[] alpha = new boolean[26];
+    static String[] words;
+    static int MAX = Integer.MIN_VALUE;
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] temps = br.readLine().split(" ");
-        N = Integer.parseInt(temps[0]);
-        K = Integer.parseInt(temps[1]);
+        String[] strs = br.readLine().split(" ");
+        N = Integer.parseInt(strs[0]);
+        K = Integer.parseInt(strs[1]);
+        words = new String[N];
+        alpha['a'-'a'] = alpha['n'-'a'] = alpha['t'-'a'] = alpha['i'-'a'] = alpha['c'-'a'] = true;
+
+        for (int i = 0; i < N; i++) {
+            words[i] = br.readLine();
+            words[i] = words[i].substring(4, words[i].length()-4);
+        }
 
         if (K < 5) {
             System.out.println(0);
@@ -22,52 +30,33 @@ class Main {
             return;
         }
 
-        strs = new String[N];
-        isTeached = new boolean[26];
 
-        for (int i = 0; i < N; i++) {
-            String temp = br.readLine();
-            strs[i] = temp.substring(4,temp.length()-4);
-        }
-
-        isTeached['a'-'a'] = true;
-        isTeached['c' - 'a'] = true;
-        isTeached['i' - 'a'] = true;
-        isTeached['n' - 'a'] = true;
-        isTeached['t' - 'a'] = true;
-
-        dfs(5,0);
-        System.out.println(result);
+            go(0, 5);
+        System.out.println(MAX);
     }
 
-    static void dfs(int depth, int idx) {
-        if (depth == K) {
-            check();
+    private static void go(int idx, int choice) {
+        if (choice == K) {
+            int cnt = 0;
+            for (int i = 0; i < N; i++) {
+                boolean flag = true;
+                for (int j = 0; j < words[i].length(); j++) {
+                    if (!alpha[words[i].charAt(j) - 'a']) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) cnt++;
+            }
+            MAX = Math.max(MAX, cnt);
             return;
         }
-        for (int i = idx; i < 26; i++) {
-            if(!isTeached[i]){
-                isTeached[i] = true;
-                dfs(depth + 1, i);
-                isTeached[i] = false;
+        for(int i = idx; i < 26; i++) {
+            if(!alpha[i]) {
+                alpha[i] = true;
+                go(i, choice+1);
+                alpha[i] = false;
             }
         }
-    }
-
-    private static void check() {
-
-        int canReadStrCnt = 0;
-        for (int i = 0; i < N; i++) {
-            int strslen = strs[i].length();
-            boolean canRead = true;
-            for (int j = 0; j < strslen; j++) {
-                if (!isTeached[strs[i].charAt(j) - 'a']) {
-                   canRead = false;
-                    break;
-                }
-            }
-            if(canRead) canReadStrCnt++;
-        }
-        result = Math.max(result, canReadStrCnt);
     }
 }
