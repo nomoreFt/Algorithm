@@ -1,70 +1,77 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import static java.util.Arrays.stream;
 
 class Main {
-    static int[] arr;
+    static int N, S;
+    static int[] temp;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String[] strs = br.readLine().split(" ");
-        int N = Integer.parseInt(strs[0]);
-        int S = Integer.parseInt(strs[1]);
+        N = Integer.parseInt(strs[0]);
+        S = Integer.parseInt(strs[1]);
 
-         arr = stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        temp = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        ArrayList<Integer> left = new ArrayList<>();
-        getSumList(0, N / 2, 0, left);
-        ArrayList<Integer> right = new ArrayList<>();
-        getSumList(N / 2, N, 0, right);
+        int m = N/2;
+        int n = N - m;
 
-        left.sort(Comparator.reverseOrder());
-        right.sort(Comparator.naturalOrder());
 
-        int leftPointer =0, rightPointer = 0;
-
-        long cnt = 0l;
-        while (leftPointer < left.size() && rightPointer < right.size()) {
-            int leftSum = left.get(leftPointer);
-            int rightSum = right.get(rightPointer);
-
-            int sum = leftSum + rightSum;
-            if (sum > S) {
-                leftPointer++;
-                continue;
-            }
-            if (sum < S) {
-                rightPointer++;
-                continue;
-            }
-            if (sum == S) {
-                long leftCnt = 0l, rightCnt = 0l;
-                while (rightPointer < right.size() && leftSum + right.get(rightPointer) == S) {
-                    rightPointer++;
-                    rightCnt++;
+        int[] first = new int[1 << n];
+        for (int i = 0; i < (1 << n); i++) {
+            for (int k = 0; k < n; k++) {
+                if ((i & (1 << k)) != 0) {
+                    first[i] += temp[k];
                 }
-                while(leftPointer < left.size() && rightSum + left.get(leftPointer)==S){
-                    leftPointer++;
-                    leftCnt++;
-                }
-                cnt += leftCnt * rightCnt;
             }
         }
-        if(S == 0) cnt--;
-        System.out.println(cnt);
-    }
 
-    public static void getSumList(int idx, int end, int accum, List<Integer> left) {
-        if (idx == end) {
-            left.add(accum);
-            return;
+        int[] second = new int[1 << m];
+        for (int i = 0; i < (1 << m); i++) {
+            for (int k = 0; k < m; k++) {
+                if ((i & (1 << k)) != 0) {
+                    second[i] += temp[k + n];
+                }
+            }
         }
-        getSumList(idx + 1, end, accum, left);
-        getSumList(idx + 1, end, accum+arr[idx], left);
+
+        Arrays.sort(first);
+        Arrays.sort(second);
+        n = (1<<n);
+        m = (1<<m);
+        for (int i=0; i<m/2; i++) {
+            int temp = second[i];
+            second[i] = second[m-i-1];
+            second[m-i-1] = temp;
+        }
+        int i = 0;
+        int j = 0;
+        long ans = 0;
+        while (i < n && j < m) {
+            if (first[i] + second[j] == S) {
+                long c1 = 1;
+                long c2 = 1;
+                i += 1;
+                j += 1;
+                while (i < n && first[i] == first[i-1]) {
+                    c1 += 1;
+                    i += 1;
+                }
+                while (j < m && second[j] == second[j-1]) {
+                    c2 += 1;
+                    j += 1;
+                }
+                ans += c1*c2;
+            } else if (first[i] + second[j] < S) {
+                i += 1;
+            } else {
+                j += 1;
+            }
+        }
+        if (S == 0) ans -= 1;
+
+        System.out.println(ans);
     }
 }
