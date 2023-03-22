@@ -2,81 +2,73 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-import static java.util.Arrays.stream;
 
 class Main {
-    static int[] A,B;
-
-    public static void main(String[] args) throws IOException {
+    static int T, N, M;
+    static int[] A;
+    static int[] B;
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
-        int n = Integer.parseInt(br.readLine());
-        A = stream(br.readLine().split(" "))
-                .mapToInt(Integer::parseInt).toArray();
-        int m = Integer.parseInt(br.readLine());
-        B = stream(br.readLine().split(" "))
-                .mapToInt(Integer::parseInt).toArray();
+        T = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        A = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        M = Integer.parseInt(br.readLine());
+        B = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-        ArrayList<Integer> accumA = new ArrayList<>();
-        ArrayList<Integer> accumB = new ArrayList<>();
+        ArrayList<Integer> first = new ArrayList<>();
+        ArrayList<Integer> second = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             int sum = 0;
-            for(int j = i; j < n; j++){
+            for (int j = i; j < N; j++) {
                 sum += A[j];
-                accumA.add(sum);
+                first.add(sum);
             }
         }
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < M; i++) {
             int sum = 0;
-            for (int j = i; j < m; j++) {
+            for (int j = i; j < M; j++) {
                 sum += B[j];
-                accumB.add(sum);
+                second.add(sum);
             }
         }
-        Collections.sort(accumA);
-        Collections.sort(accumB);
 
-        int aSize = accumA.size();
-        int bSize = accumB.size();
 
-        long cnt = 0;
-        int leftPointer = 0;
-        int rightPointer = accumB.size() - 1;
+        Collections.sort(first);
+        Collections.sort(second);
 
-        while (leftPointer < aSize && rightPointer >= 0) {
-            int sum = accumA.get(leftPointer) + accumB.get(rightPointer);
-            if (sum == T) {
+        int firstSize = first.size();
+        int secondSize = second.size();
+        long ans = 0;
+        int left = 0;
+        int right = second.size()-1;
 
-                int a = accumA.get(leftPointer);
-                int b = accumB.get(rightPointer);
-                long leftCnt = 0;
-                long rightCnt = 0;
-
-                while(leftPointer < aSize && accumA.get(leftPointer) == a){
-                    leftCnt++;
-                    leftPointer++;
+        while (left < firstSize && right >= 0) {
+            int sum = first.get(left) + second.get(right);
+            if (sum== T) {
+                int a = first.get(left);
+                int b = second.get(right);
+                long c1 = 0;
+                long c2 = 0;
+                while (left < firstSize && first.get(left) == a) {
+                    c1++;
+                    left++;
                 }
-                while(rightPointer >= 0 && accumB.get(rightPointer) == b){
-                    rightCnt++;
-                    rightPointer--;
+                while (right >=0 && second.get(right) == b) {
+                    c2++;
+                    right--;
                 }
-                cnt += leftCnt * rightCnt;
+
+                ans += c1 * c2;
             } else if (sum < T) {
-                leftPointer++;
-            } else if (sum > T) {
-                rightPointer--;
+                left++;
+            }else if(sum > T){
+                right--;
             }
         }
 
-
-        System.out.println(cnt);
-
+        System.out.println(ans);
 
     }
-
 }
