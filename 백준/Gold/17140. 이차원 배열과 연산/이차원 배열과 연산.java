@@ -26,8 +26,8 @@ public class Main {
             }
         }
 
-
-        for (int time = 0; time <= 100; ++time) {
+        int time = 0;
+        while(time <= 100){
             if(graph[r][c] == k) {
                 System.out.println(time);
                 System.exit(0);
@@ -37,7 +37,9 @@ public class Main {
             }else{
                 cCal();
             }
+            time++;
         }
+        
         System.out.println(-1);
     }
 
