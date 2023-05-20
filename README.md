@@ -23,6 +23,43 @@ computeIfAbsent() 는 만일 키가 없으면 값을 얻기 위하여 호출하�
 그러므로 key의 value는 메소드 호출에서 오고 만일 메소드가 비싸다면(계산이 비용이 많이든다면) putIfAbsent() 는 무조건 계산을 하지만
 computeIfAbsent() 는 key를 찾을 수 없지 않는 한 계산을 하지 않는다.
 
+
+* 기존 배열에서 숫자 개수를 세고 특정 방식으로 정렬 후, entrySet 사용하는 예시
+
+```java
+HashMap<Integer, Integer> map = new HashMap<>();
+            for (int i = 0; i < nowRow; i++) {
+                if (graph[i][j] != 0) {
+                    ****map.put(graph[i][j],map.getOrDefault(graph[i][j],0) + 1);****
+                    graph[i][j] = 0;
+                }
+            }
+```            
+
+
+```java
+            ArrayList<Map.Entry<Integer,Integer>> list = new ArrayList<>(map.entrySet());
+            Collections.sort(list,(o1,o2) -> {
+                if (o1.getValue() == o2.getValue()) {
+                    return o1.getKey() - o2.getKey();
+                } else{
+                    return o1.getValue() - o2.getValue();
+                }
+            });
+```
+
+```java
+            for (Map.Entry<Integer, Integer> m : list) {
+                if (idx < 100) {
+                    graph[idx][j] = m.getKey();
+                    idx += 1;
+                    graph[idx][j] = m.getValue();
+                    idx++;
+                }
+
+```
+
+
   ```java
 var theKey = "Fish";        
 
