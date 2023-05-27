@@ -116,16 +116,6 @@ public class Main {
 
     }
 
-    private static void go(int x, int y, int nX, int nY) {
-        for(Pawn p : pawnGraph[x][y]){
-            pawnGraph[nX][nY].add(p);
-            p.x = nX;
-            p.y = nY;
-            pawnList[p.idx] = p;
-        }
-        pawnGraph[x][y].clear();
-    }
-
     public static int opponent(int dir){
         if(dir ==  0) return 1;
         else if(dir == 1) return 0;
