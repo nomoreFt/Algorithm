@@ -78,27 +78,19 @@ public void read(String text) {
 
 ```
 
-#20201203
-PrimeNum 에라토스테네스의 채를 이용하여 소수 문제 풀기
-
-#20201204
-에라토스테네스의 채 응용하는 골드바흐문제 해결
-key : 짝수 - 홀수 = 홀수   
-
-#2020121
-순열 다음 수, 이전 수 구하기
-swap 무작위 전체순열
-visited 순서 전체순열
-
-#20201228
-모든 순열, 다음 순열, 이전 순열, 조합 구하기 완료
-
-#20210113
-비트연산, 비트마스크 문제 풀기
-
-[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api/badge?name=nomoreft)](https://velog.io/@nomoreft)
-
-[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=nomoreft)](https://github.com/nomoreFt/Algorithm)
 
 
-NQueen
+# Collection
+
+배열을 오른쪽, 왼쪽으로 한칸씩 옮길 때 사용.
+int[][]배열은 작동하지 않으니 Integer[][] 배열로 
+
+```
+    static void go(Integer[][] a, int x, int d, int k) {
+        if (d == 0) {
+            Collections.rotate(Arrays.asList(a[x]), k);
+        } else {
+            Collections.rotate(Arrays.asList(a[x]), (a[x].length-k));
+        }
+    }
+```
