@@ -94,3 +94,53 @@ int[][]배열은 작동하지 않으니 Integer[][] 배열로
         }
     }
 ```
+
+
+# 객체배열 deepCopy
+
+
+```java
+ private static Fish[][] copyFishBoard(Fish[][] origin) {
+        //자바 객체배열은 clone말고 new 생성을 해줘야 deepCopy가 가능하다.
+        Fish[][] copy = new Fish[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                copy[i][j] = new Fish(origin[i][j].idx, origin[i][j].dir);
+            }
+        }
+        return copy;
+    }
+```
+
+# deepCopy 재귀 
+
+객체 이차원 배열로 재귀 상황 발생시 진행 (특정한 경우의 수들을 선택, 선택하지 않을 경우 각각 파생되는 경우의 수 처리)
+
+```java
+ private static void solution(Fish[][] fishBoard, Shark now, int cur){
+        int nX = now.x + dx[now.dir];
+        int nY = now.y + dy[now.dir];
+        while(0 <= nX && nX < 4 && 0 <= nY && nY < 4){
+            //fishBoard의 idx가 0이면 빈칸
+            if (fishBoard[nX][nY].idx != 0) {
+                //앞서 조건이 변경될 경우의 처리 진행 ex) nX,nY좌표의 공백 처리
+                Fish temp = fishBoard[nX][nY];
+                int value = cur +temp.idx;
+                fishBoard[nX][nY] = new Fish(0,0);
+                max = Math.max(max, value);
+
+                //Fish[][] deepCopy, 옮긴 상어위치,  상황별로 개별 작동시키기 위해 현재까지 섭취한 값
+                solution(copyFishBoard(fishBoard), new Shark(nX,nY,temp.dir), value);
+                
+                //상황 종료 후 원상복구
+                fishBoard[nX][nY] = temp;
+            }
+            nX += dx[now.dir];
+            nY += dy[now.dir];
+        }
+    }
+```
+
+
+
+
