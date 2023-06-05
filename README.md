@@ -98,10 +98,11 @@ int[][]배열은 작동하지 않으니 Integer[][] 배열로
 
 # 객체배열 deepCopy
 
+자바 객체배열은 clone말고 new 생성을 해줘야 deepCopy가 가능하다.
 
 ```java
  private static Fish[][] copyFishBoard(Fish[][] origin) {
-        //자바 객체배열은 clone말고 new 생성을 해줘야 deepCopy가 가능하다.
+        
         Fish[][] copy = new Fish[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
