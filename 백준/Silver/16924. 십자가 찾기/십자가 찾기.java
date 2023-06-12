@@ -6,6 +6,7 @@ public class Main {
     static char[][] graph;
     static boolean[][] visited;
     static ArrayList<String> strs = new ArrayList<>();
+    static StringBuilder sb = new StringBuilder();
     static int cnt = 0;
 
     public static void main(String[] args) throws IOException{
@@ -38,10 +39,8 @@ public class Main {
                 }
             }
         }
-        System.out.println(strs.size());
-        for (int i = 0; i < strs.size(); i++) {
-            System.out.println(strs.get(i));
-        }
+        System.out.println(cnt);
+        System.out.print(sb.toString());
     }
 
     private static void checkCross(int x, int y, BufferedWriter bw) throws IOException {
@@ -53,7 +52,7 @@ public class Main {
         }
 
         if (size > 0) {
-            strs.add((x+1) + " " + (y+1) + " " + size);
+            sb.append((x+1) + " " + (y+1) + " " + size+"\n");
             cnt++;
             visited[x][y] = true;
             for (int i = 1; i <= size; i++) {
