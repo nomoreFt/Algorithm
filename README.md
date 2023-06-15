@@ -143,5 +143,43 @@ int[][]배열은 작동하지 않으니 Integer[][] 배열로
 ```
 
 
+# Sort
+
+무언가 정렬할 경우, 보통 primitive type(int, char 등) 으로 받는다.
+그럴 경우 boxed 해서 Collection으로 만들자. sorting 하기 편하다.
+
+```java
+List<Long> collect = Arrays.stream(A).boxed().collect(Collectors.toList());
+```
+
+## Comparator 구현
+
+Collection으로 변경했으면, 원하는대로 Sorting을 하자
+
+아래 예시는 3을 많이 가지고 있는 경우 (3^n 3으로 나눠서 0이 몇번 나오는지) 내림차순, 같다면 오름차순이다.
+
+Comparator 구현의 꿀팁은
+- compare 메소드가 반환하는 값이 음수일 경우, 첫 번째 인자가 두 번째 인자보다 작다는 것을 의미합니다.
+- compare 메소드가 반환하는 값이 양수일 경우, 첫 번째 인자가 두 번째 인자보다 크다는 것을 의미합니다.
+- compare 메소드가 반환하는 값이 0일 경우, 첫 번째 인자와 두 번째 인자가 같다는 것을 의미합니다.
+
+```java
+ collect.sort(new Comparator<Long>(){
+
+            @Override
+            public int compare(Long o1, Long o2) {
+                int o1Cnt = countDivisibleBy3(o1);
+                int o2Cnt = countDivisibleBy3(o2);
+
+                if(o1Cnt <o2Cnt) {
+                    return 1;
+                }else if(o1Cnt > o2Cnt) {
+                    return -1;
+                }else {
+                    return o1.compareTo(o2);
+                }
+            }
+        });
+```
 
 
