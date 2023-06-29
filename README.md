@@ -1,7 +1,59 @@
 # Algorithm
 Practice Algorithm Code 
-.
-백준 
+
+
+## 경우의 수 (브루트포스)
+
+* 순열 구현
+* 비트마스크
+* 재귀함수
+
+
+### 순열 구현
+
+
+### 비트마스크
+
+```java
+ for (int bit = 0; bit < (1 << N); bit++) {
+            int total = 0;
+            int max = Integer.MIN_VALUE;
+            int min = Integer.MAX_VALUE;
+            int cnt = 0;
+            for (int i = 0; i < N; i++) {
+                if ((bit & (1 << i)) != 0) {
+                    total += A[i];
+                    max = Math.max(max, A[i]);
+                    min = Math.min(min, A[i]);
+                    cnt++;
+                    //System.out.print(i + " ,");
+                }
+            }
+            //System.out.print("===");
+
+            if(cnt >= 2 && total >= L && total <= R && (max-min) >= X){
+                ans++;
+              //  System.out.print("select");
+            }
+            //System.out.println();
+        }
+
+```
+
+전체 2^N 만큼 진행 (ex 5개면 2^6 = 64 보다 작은 0 ~ 63까지. 63이면 0,1,2,3,4,5의 경우가 다 찬 경우다.)
+                  ->2 4 8 16 32 64
+                  
+ex) 4개중에 골라야 하는 경우 위의 소스코드 예시
+<img width="204" alt="스크린샷 2023-06-29 오후 11 44 51" src="https://github.com/nomoreFt/Algorithm/assets/37995817/30c0c83c-bb3f-4c00-a8e0-0fb6f6beb93c">
+
+### 재귀함수
+
+---
+
+
+
+
+
 ## Hash
 
 # map - 
