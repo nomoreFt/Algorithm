@@ -48,6 +48,41 @@ ex) 4개중에 골라야 하는 경우 위의 소스코드 예시
 
 ### 재귀함수
 
+ ㅁ ㅁ ㅁ ㅁ  4자리의 모든 순열 (경우의 수) 는, 각 자리마다 (1,2,3,4) 중 이미 나온것을 제외한 무엇이 올 것이냐를 고려하면 된다.
+
+```java
+public class Main {
+    static int[] A = {1, 2, 3, 4};
+    static boolean[] visited = new boolean[4];
+    static int n = 4;
+    public static void main(String[] args) {
+
+        go(0, "");
+
+
+    }
+
+    static void go(int idx, String sum) {
+        if (idx == n) {
+            System.out.println(sum);
+        }
+
+        //전체 순열이라 매 숫자 Choice시에 전체 경우중 선택하지 않은 것 고려
+        for(int i = 0; i < n; i++) {
+            if(visited[i]) continue;
+            //0으로 시작하는 숫자는 제외할 경우
+            if(idx == 0 && A[i]== 0) continue;
+            visited[i] = true;
+            go( idx + 1, sum + A[i]);
+            visited[i] = false;
+        }
+    }
+}
+
+
+
+```
+
 ---
 
 
