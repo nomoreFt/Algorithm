@@ -1,71 +1,65 @@
 import java.io.*;
+import java.security.Principal;
 import java.util.*;
 
-
 class Main {
-    static int  N;
-    static int[] A;
-    static int[] B = new int[4];
-    static int MAX = Integer.MIN_VALUE;
-    static int MIN = Integer.MAX_VALUE;
+    static int N;
+    static int[] arr;
+    static int[] operator = new int[4];
+    static int max = Integer.MIN_VALUE;
+    static int min = Integer.MAX_VALUE;
 
-
-
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         Scanner sc = new Scanner(System.in);
         N = sc.nextInt();
-        A = new int[N];
+        arr = new int[N];
         for (int i = 0; i < N; i++) {
-            A[i] = sc.nextInt();
+            arr[i]  = sc.nextInt();
         }
-        for (int i = 0; i < 4; i++) {
-            B[i] = sc.nextInt();
-        }
+        operator[0] = sc.nextInt();
+        operator[1] = sc.nextInt();
+        operator[2] = sc.nextInt();
+        operator[3] = sc.nextInt();
 
-        dfs(0,B[0],B[1],B[2],B[3],"");
-        System.out.println(MAX);
-        System.out.println(MIN);
+        go(1,arr[0], operator);
 
+        System.out.println(max);
+        System.out.println(min);
 
     }
 
-    public static void dfs(int idx,int plus, int minus, int mul,int div, String str) {
-        if(idx == N-1){
-            String[] split = str.split("");
-            int sum = A[0];
-            for (int i = 0; i < split.length; i++) {
-                if (Integer.parseInt(split[i]) == 0) {
-                    sum += A[i + 1];
-                }
-                if (Integer.parseInt(split[i]) == 1) {
-                    sum -= A[i + 1];
-                }
-                if (Integer.parseInt(split[i]) == 2) {
-                    sum *= A[i + 1];
-                }
-                if (Integer.parseInt(split[i]) == 3) {
-                    sum /= A[i + 1];
-                }
-            }
-            MAX = Math.max(MAX, sum);
-            MIN = Math.min(MIN, sum);
+
+    public static void go(int nowIdx, int result, int[] operator){
+        if(nowIdx == N){
+            max = Math.max(max, result);
+            min = Math.min(min, result);
             return;
         }
+        if(operator[0] > 0){
+            operator[0]--;
+            go(nowIdx + 1, result + arr[nowIdx], operator);
+            operator[0]++;
+        }
 
-        if (plus > 0) {
-            dfs(idx + 1, plus - 1, minus, mul, div,str+"0");
+        if(operator[1] > 0){
+            operator[1]--;
+            go(nowIdx + 1, result - arr[nowIdx], operator);
+            operator[1]++;
         }
-        if (minus > 0) {
-            dfs(idx + 1, plus, minus -1, mul, div, str+"1");
+
+        if(operator[2] > 0){
+            operator[2]--;
+            go(nowIdx + 1, result * arr[nowIdx], operator);
+            operator[2]++;
         }
-        if (mul > 0) {
-            dfs(idx + 1, plus, minus, mul-1, div, str+"2");
-        }
-        if (div > 0) {
-            dfs(idx + 1, plus, minus, mul, div-1, str+"3");
+
+        if(operator[3] > 0){
+            operator[3]--;
+            go(nowIdx + 1, result / arr[nowIdx], operator);
+            operator[3]++;
         }
 
     }
+
 
 }
