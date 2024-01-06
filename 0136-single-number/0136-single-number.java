@@ -1,17 +1,21 @@
+import java.util.*;
+
 class Solution {
     public int singleNumber(int[] nums) {
-        int[] temp = new int[30000];
-        for(int i : nums){
-            temp[i]++;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
         }
-        
-        int result = -1;
-        for(int i = 1; i < temp.length; i++){
-            if(temp[i] == 1){
-                result = i;
+
+        int result = 0;
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) {
+                result = entry.getKey();
                 break;
             }
         }
+
         return result;
     }
 }
