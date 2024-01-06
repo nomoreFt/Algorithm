@@ -20,7 +20,7 @@ class Solution {
             if(compared == 0){
                 s1x[0].compareTo(s2x[0])
             }else{
-                return compared
+                compared
             }
         })
 
