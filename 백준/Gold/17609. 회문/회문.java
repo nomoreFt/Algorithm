@@ -15,7 +15,7 @@ class Main {
             int answer = 2;
 
             //회문인가
-            answer = isPalindrome(str);
+            answer = isPalindrome(str, 0, str.length() - 1);
             //유사회문인가
             if(answer == 2){
                 answer = isSimilarPalindrome(str);
@@ -35,8 +35,8 @@ class Main {
         while(start < end){
             //처음 회문이 아닌 부분에서 xabba 0, 4 xabb = left , abba = right
             if(str.charAt(start) != str.charAt(end)){
-                int left = isPalindrome(str.substring(start, end));
-                int right = isPalindrome(str.substring(start + 1, end+1));
+                int left = isPalindrome(str, start, end-1);
+                int right = isPalindrome(str, start + 1, end);
 
                 if(left == 0 || right == 0){
                     return 1;
@@ -52,10 +52,7 @@ class Main {
         return -1;
     }
 
-    public static int isPalindrome(String str){
-        int start = 0;
-        int end = str.length() - 1;
-
+    public static int isPalindrome(String str, int start, int end){
         while(start < end){
             if(str.charAt(start) != str.charAt(end)){
                 return 2;
