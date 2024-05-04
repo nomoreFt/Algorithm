@@ -7,7 +7,7 @@ class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
         //O(N)이면 됨
         while(T-- > 0){
             String str = br.readLine();
@@ -21,7 +21,7 @@ class Main {
                 answer = isSimilarPalindrome(str);
             }
 
-            result += answer + "\n";
+            result.append(answer + "\n");
 
             //둘 모두 해당되지 않는가
         }
