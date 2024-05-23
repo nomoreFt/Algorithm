@@ -1,26 +1,18 @@
 class Solution {
-        public int removeDuplicates(int[] nums) {
+    public int removeDuplicates(int[] nums) {
         if (nums.length <= 2) {
             return nums.length;
         }
 
-        int count = 1; // 현재 원소의 개수
-        int length = 1; // 최종 결과 배열의 길이, 첫 원소는 포함됨
+        int index = 2; // 초기값은 2, 세 번째 원소부터 확인 시작
 
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] == nums[i - 1]) {
-                count++; // 현재 원소가 이전 원소와 같으면 개수 증가
-            } else {
-                count = 1; // 현재 원소가 이전 원소와 다르면 개수 초기화
-            }
-
-            if (count <= 2) { // 현재 원소의 개수가 2 이하이면 길이 증가
-                nums[length] = nums[i]; // 배열 수정 (결과 배열의 길이를 유지하기 위함)
-                length++;
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i] != nums[index - 2]) { // 현재 원소가 index-2 원소와 다르면
+                nums[index] = nums[i]; // 현재 원소를 index 위치에 저장
+                index++;
             }
         }
 
-        return length; // 중복을 제거한 후의 길이 반환
+        return index; // 중복을 제거한 후의 길이 반환
     }
-
 }
