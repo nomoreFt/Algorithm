@@ -10,30 +10,39 @@
  */
 public class Solution {
     public boolean isPalindrome(ListNode head) {
-       ListNode fast = head, slow = head;
-       
-       while(fast != null && fast.next != null){
-        fast = fast.next.next;
-        slow = slow.next;
-       }
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
 
-       if(fast != null){
-        slow = slow.next;
-       }
+        if(fast != null) slow = slow.next;
+      
+        ListNode tail = reverseListNode(slow);
 
-       ListNode rev = null;
-       while(slow != null){
-        ListNode next = slow.next;
-        slow.next = rev;
-        rev = slow;
-        slow = next;
-       }
+        return checkTwoListNodePalindrome(head, tail);
+}
 
-       while(rev != null){
-        if(rev.val != head.val) return false;
-        rev = rev.next;
-        head = head.next;
-       }
-       return true;
+public ListNode reverseListNode(ListNode target){
+    ListNode tail = null;
+    ListNode current = target;
+    
+    while(current != null){
+        ListNode temp = current.next;
+        current.next = tail;
+        tail = current;
+        current = temp;
     }
+    return tail;
+}
+
+public boolean checkTwoListNodePalindrome(ListNode head, ListNode tail){
+    while(tail != null){
+        if(head.val != tail.val) return false;
+        head = head.next;
+        tail = tail.next;
+    }
+    return true;
+}
 }
