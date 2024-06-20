@@ -90,7 +90,7 @@ class Twitter {
     }
 
     public void unfollow(int followerId, int followeeId) {
-        if (followerId == followeeId || !userMap.containsKey(followerId) || !userMap.containsKey(followeeId)) return;
+        if (!userMap.containsKey(followerId) || !userMap.containsKey(followeeId)) return;
         userMap.get(followerId).unfollow(followeeId);
     }
 }
