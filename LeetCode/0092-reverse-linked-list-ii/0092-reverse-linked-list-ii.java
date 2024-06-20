@@ -28,11 +28,8 @@ class Solution {
             target.next = prev.next;
             prev.next = target;
             target = curr.next;
-        }
-        
-
-
-        
+        }//curr의 뒤에 자동으로 target을 끼워넣고, target을 curr의 next로 선정하여 다시 왼쪽 left로 끼워넣게 설정
+    
         return dummy.next;
     }
 }
