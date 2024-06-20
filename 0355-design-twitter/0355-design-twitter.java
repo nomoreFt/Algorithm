@@ -83,8 +83,6 @@ class Twitter {
     }
 
     public void follow(int followerId, int followeeId) {
-        if (followerId == followeeId) return;
-
         userMap.putIfAbsent(followerId, new User(followerId));
         userMap.putIfAbsent(followeeId, new User(followeeId));
 
