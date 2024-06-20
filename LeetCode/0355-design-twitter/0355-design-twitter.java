@@ -2,14 +2,19 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 class Twitter {
-    class Tweet {
+    class Tweet implements Comparable<Tweet> {
         int id;
         LocalDateTime createdTime;
-        Tweet next;
+        int creatorId;
 
-        Tweet(int id) {
-            this.id = id;
-            this.createdTime = LocalDateTime.now();
+        @Override
+        public int compareTo(Tweet o) {
+            // 최신순 정렬
+            return o.createdTime.compareTo(this.createdTime);
+        }
+        
+        public Tweet() {
+            createdTime = LocalDateTime.now();
         }
     }
 
@@ -17,19 +22,12 @@ class Twitter {
         int id;
         Set<Integer> followers;
         Set<Integer> followees;
-        Tweet tweetHead;
+        PriorityQueue<Tweet> tweets;
 
-        User(int id) {
-            this.id = id;
+        public User() {
             followers = new HashSet<>();
             followees = new HashSet<>();
-            tweetHead = null;
-        }
-
-        void postTweet(int tweetId) {
-            Tweet newTweet = new Tweet(tweetId);
-            newTweet.next = tweetHead;
-            tweetHead = newTweet;
+            tweets = new PriorityQueue<>();
         }
     }
 
@@ -40,48 +38,51 @@ class Twitter {
     }
 
     public void postTweet(int userId, int tweetId) {
-        userMap.putIfAbsent(userId, new User(userId));
+        // userId에 해당하는 User에 tweetId 추가
+        if (!userMap.containsKey(userId)) {
+            userMap.put(userId, new User());
+        }
         User user = userMap.get(userId);
-        user.postTweet(tweetId);
+        Tweet newTweet = new Tweet();
+        newTweet.id = tweetId;
+        newTweet.creatorId = userId;
+        user.tweets.add(newTweet);
     }
 
     public List<Integer> getNewsFeed(int userId) {
+        // follow한 사람들과 자기가 쓴 글 중 최근 10개
         List<Integer> result = new ArrayList<>();
         if (!userMap.containsKey(userId)) {
             return result;
         }
 
         User user = userMap.get(userId);
-        PriorityQueue<Tweet> feed = new PriorityQueue<>((a, b) -> b.createdTime.compareTo(a.createdTime));
+        PriorityQueue<Tweet> feed = new PriorityQueue<>(user.tweets);
 
-        addTweetsToFeed(feed, user.tweetHead);
         for (int followeeId : user.followees) {
-            if (userMap.containsKey(followeeId)) {
-                addTweetsToFeed(feed, userMap.get(followeeId).tweetHead);
+            User followee = userMap.get(followeeId);
+            if (followee != null && followee.tweets != null) {
+                feed.addAll(followee.tweets);
             }
         }
 
-        int count = 0;
-        while (!feed.isEmpty() && count < 10) {
+        for (int i = 0; i < 10 && !feed.isEmpty(); i++) {
             result.add(feed.poll().id);
-            count++;
         }
 
         return result;
     }
 
-    private void addTweetsToFeed(PriorityQueue<Tweet> feed, Tweet head) {
-        while (head != null) {
-            feed.offer(head);
-            head = head.next;
-        }
-    }
-
     public void follow(int followerId, int followeeId) {
+        // followerId가 followeeId를 follow
         if (followerId == followeeId) return;
-
-        userMap.putIfAbsent(followerId, new User(followerId));
-        userMap.putIfAbsent(followeeId, new User(followeeId));
+        
+        if (!userMap.containsKey(followerId)) {
+            userMap.put(followerId, new User());
+        }
+        if (!userMap.containsKey(followeeId)) {
+            userMap.put(followeeId, new User());
+        }
 
         User follower = userMap.get(followerId);
         User followee = userMap.get(followeeId);
@@ -91,6 +92,7 @@ class Twitter {
     }
 
     public void unfollow(int followerId, int followeeId) {
+        // followerId가 followeeId를 unfollow
         if (followerId == followeeId || !userMap.containsKey(followerId) || !userMap.containsKey(followeeId)) return;
 
         User follower = userMap.get(followerId);
