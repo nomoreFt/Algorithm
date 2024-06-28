@@ -7,7 +7,7 @@ class Solution {
         }
         
         boolean[] visited = new boolean[26]; // 결과 문자열에 문자가 포함되었는지 여부를 추적하는 배열
-        Stack<Character> stack = new Stack<>(); // 결과를 저장할 스택
+        Deque<Character> stack = new ArrayDeque<>(); // 결과를 저장할 스택
         
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -28,6 +28,6 @@ class Solution {
             result.append(c);
         }
         
-        return result.toString();
+        return result.reverse().toString();
     }
 }
