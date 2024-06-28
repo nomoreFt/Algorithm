@@ -16,6 +16,10 @@ class Solution {
         return set;
     }
     public String removeDuplicateLetters(String s) {
+        if (s.isEmpty()) {
+            return "";
+        }
+
         for(char c : toSortedSet(s)){
             String suffix = s.substring(s.indexOf(c));
             if(toSortedSet(s).equals(toSortedSet(suffix))){
