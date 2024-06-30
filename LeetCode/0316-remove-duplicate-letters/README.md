@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/remove-duplicate-letters/">316. Remove Duplicate Letters</a></h2><h3>Medium</h3><hr><p>Given a string <code>s</code>, remove duplicate letters so that every letter appears once and only once. You must make sure your result is <span data-keyword="lexicographically-smaller-string"><strong>the smallest in lexicographical order</strong></span> among all possible results.</p>
+<h2><a href="https://leetcode.com/problems/remove-duplicate-letters">316. Remove Duplicate Letters</a></h2><h3>Medium</h3><hr><p>Given a string <code>s</code>, remove duplicate letters so that every letter appears once and only once. You must make sure your result is <span data-keyword="lexicographically-smaller-string"><strong>the smallest in lexicographical order</strong></span> among all possible results.</p>
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
