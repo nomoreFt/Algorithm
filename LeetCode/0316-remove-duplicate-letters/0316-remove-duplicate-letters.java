@@ -1,61 +1,33 @@
 class Solution {
+    int alphaCnt = 26;
     public String removeDuplicateLetters(String s) {
-       int[] lastIdx = new int[26];
-       for(int i = 0; i < s.length(); i++){
+     int len = s.length();
+     int[] lastIdx = new int[alphaCnt];
+     for(int i = 0; i < len; i++){
         lastIdx[s.charAt(i) - 'a'] = i;
-       }
+     }
 
-       boolean[] visited = new boolean[26];
-       Deque<Character> stack = new ArrayDeque<>();
-       
-       for(int i = 0; i < s.length(); i++){
+     boolean[] visited = new boolean[alphaCnt];
+     Deque<Character> stack = new ArrayDeque<>();
+
+     for(int i = 0; i < len; i++){
         char target = s.charAt(i);
-    
         if(visited[target - 'a']) continue;
-
-        while(!stack.isEmpty() && stack.peek() > target && lastIdx[stack.peek() - 'a'] > i){
+        while(!stack.isEmpty() 
+        && stack.peek() > target
+        && lastIdx[stack.peek() - 'a'] > i){
             visited[stack.pop() - 'a'] = false;
         }
 
         stack.push(target);
         visited[target - 'a'] = true;
+     }
 
-       }
-
-       StringBuilder sb = new StringBuilder();
-       for(char c : stack){
+     StringBuilder sb = new StringBuilder();
+     for(char c : stack){
         sb.append(c);
-       }
+     }
 
-       return sb.reverse().toString();
+     return sb.reverse()toString();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
