@@ -1,33 +1,38 @@
 class Solution {
     public String removeDuplicateLetters(String s) {
-       int[] lastIdx = new int[26];
-       for(int i = 0; i < s.length(); i++){
-        lastIdx[s.charAt(i) - 'a'] = i;
-       }//각 문자가 등장하는 마지막 idx 저장 (앞에 나왔다면 순서상 불필요하면 제거하기 위해)
-
-       boolean[] visited = new boolean[26];
-       Deque<Character> stack = new ArrayDeque<>();
-       
-       for(int i = 0; i < s.length(); i++){
-        char target = s.charAt(i);
-    
-        if(visited[target - 'a']) continue;
-
-        while(!stack.isEmpty() && stack.peek() > target && lastIdx[stack.peek() - 'a'] > i){
-            visited[stack.pop() - 'a'] = false;
+        Deque<Character> stack = new ArrayDeque<>();
+        int[] lastIdx = new int[26];
+        boolean[] used = new boolean[26];
+        int len = s.length();
+        //lastIdx 측정
+        for(int i = 0; i < len; i++){
+            lastIdx[s.charAt(i) - 'a'] = i;
         }
 
-        stack.push(target);
-        visited[target - 'a'] = true;
+        
+        //문장 돌면서 stack push, 뒤에 lastIdx 가 추가적으로 있거나 변곡점 있으면 pop
+        for(int i = 0; i < len; i++){
+            char target = s.charAt(i);
+            if(used[target - 'a']) continue; //연속으로 들어오는것 배제
+            while(!stack.isEmpty()
+            && stack.peek() > target
+            && lastIdx[stack.peek() - 'a'] > i){
+                char temp = stack.pop();
+                used[temp - 'a'] = false;
+            } 
 
-       }
+            stack.push(target);
+            used[target - 'a'] = true;
+        }
 
-       StringBuilder sb = new StringBuilder();
-       for(char c : stack){
-        sb.append(c);
-       }
+        StringBuilder sb = new StringBuilder();
+        for(char c : stack){
+            sb.append(c);
+        }
 
-       return sb.reverse().toString();
+
+        return sb.reverse().toString();
+        
     }
 }
 
