@@ -2,22 +2,17 @@ import java.util.*;
 
 class Solution {
     public int majorityElement(int[] nums) {
-        Map<Integer, Integer> m = new HashMap<>();
+       int count = 0;
+        Integer candidate = null;
         
-        for(int n : nums){
-            m.put(n, m.getOrDefault(n,0) + 1);
-        }
-
-        int result = 0;
-        int biggest = 0;
-        for(Map.Entry e : m.entrySet()){
-            if((int)e.getValue() > biggest){
-                biggest = (int)e.getValue();
-                result = (int)e.getKey();
+        for (int num : nums) {
+            if (count == 0) {
+                candidate = num;
             }
+            count += (num == candidate) ? 1 : -1;
         }
         
-        return result;
+        return candidate;
         
     }
 }
