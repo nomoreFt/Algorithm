@@ -2,17 +2,15 @@ import java.util.*;
 
 class Solution {
     public int majorityElement(int[] nums) {
-       int count = 0;
-        Integer candidate = null;
+        Map<Integer, Integer> m = new HashMap<>();
         
-        for (int num : nums) {
-            if (count == 0) {
-                candidate = num;
+        for (int n : nums) {
+            m.put(n, m.getOrDefault(n, 0) + 1);
+            if (m.get(n) > nums.length / 2) {
+                return n;
             }
-            count += (num == candidate) ? 1 : -1;
         }
         
-        return candidate;
-        
+        return -1; 
     }
 }
