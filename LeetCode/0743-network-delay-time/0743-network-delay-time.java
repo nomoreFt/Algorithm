@@ -17,7 +17,7 @@ class Solution {
         while(!pq.isEmpty()){
             Map.Entry<Integer, Integer> cur = pq.poll();
             int targetV = cur.getKey();
-            int targetV_dist = cur.getvalue();
+            int targetV_dist = cur.getValue();
 
             if(!dist.containsKey(targetV)){
                 dist.put(targetV, targetV_dist);
