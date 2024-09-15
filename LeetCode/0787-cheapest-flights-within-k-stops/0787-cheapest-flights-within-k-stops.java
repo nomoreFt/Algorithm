@@ -20,11 +20,17 @@ class Solution {
         }
         minCost[src][0] = 0;
 
+        int result = Integer.MAX_VALUE;
+
         // BFS 탐색 시작
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
 
-            if (cur.city == dst) return cur.cost;
+            // 현재 도시가 목적지일 때, 최소 비용을 갱신
+            if (cur.city == dst) {
+                result = Math.min(result, cur.cost);
+                continue; // 다른 경로도 더 탐색해야 함
+            }
 
             if (cur.stops > k) continue; // 정류장 수 초과
 
@@ -41,7 +47,7 @@ class Solution {
             }
         }
 
-        return -1; // 경로를 찾을 수 없을 경우
+        return result == Integer.MAX_VALUE ? -1 : result;
     }
 
     static class Node {
