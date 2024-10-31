@@ -15,17 +15,18 @@ class Main {
             }
         }
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        //큰수부터
 
         for(int i = 0; i < N; i++){
             for(int j = 0; j < N; j++){
                 pq.offer(graph[i][j]);
-                if(pq.size() > N){
-                    pq.poll();
-                }
             }
         }
 
+        for(int i = 0;  i < N-1; i++){
+            pq.poll();
+        }
         System.out.println(pq.poll());
 
     }
