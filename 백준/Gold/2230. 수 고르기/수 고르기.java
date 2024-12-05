@@ -11,18 +11,17 @@ class Main {
         N = Integer.parseInt(s[0]);
         M = Integer.parseInt(s[1]);
 
-        ArrayList<Integer> list = new ArrayList<>();
+        int[] arr = new int[N];
         for(int i = 0; i < N; i++){
-            list.add(Integer.valueOf(br.readLine()));
+            arr[i] = Integer.parseInt(br.readLine());
         }
-
-        list.sort(Comparator.naturalOrder());
-
+        
+        Arrays.sort(arr);
 
         int left = 0;
         int right = 0;
         while(right < N){
-            int diff = list.get(right) - list.get(left);
+            int diff = arr[right] - arr[left];
             if(diff == M){
                 min = M;
                 break;
@@ -34,7 +33,6 @@ class Main {
                 left++;
             }
         }
-        
-       System.out.println(min);
+        System.out.println(min);
     }
 }
