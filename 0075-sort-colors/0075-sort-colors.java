@@ -1,29 +1,31 @@
 class Solution {
-    public void sortColors(int[] nums) {
-        int low = 0; // 0의 위치
-        int high = nums.length - 1; // 2의 위치
-        int current = 0; // 현재 탐색 중인 위치
+    static int RED = 0;
+    static int WHITE = 1;
+    static int BLUE = 2;
 
-        while (current <= high) {
-            if (nums[current] == 0) {
-                // 현재 값이 0이면 low 위치로 보냄
-                swap(nums, low, current);
+    public void sortColors(int[] nums) {
+        
+        int low = 0;
+        int high = nums.length-1;
+        int current = 0;
+
+        while(current <= high){
+            if(nums[current] == RED){
+                swap(low, current, nums);
                 low++;
                 current++;
-            } else if (nums[current] == 2) {
-                // 현재 값이 2이면 high 위치로 보냄
-                swap(nums, current, high);
+            }else if(nums[current] == BLUE){
+                swap(high, current, nums);
                 high--;
-            } else {
-                // 현재 값이 1이면 그냥 다음으로 이동
+            }else{
                 current++;
             }
         }
     }
 
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
+    public void swap(int a, int b, int[] nums){
+        int temp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = temp;
     }
 }
